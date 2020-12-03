@@ -1,7 +1,7 @@
 ## Main
 # main
 snippet main
-	int main(int argc, char *argv[])
+	int main(int argc, const char *argv[])
 	{
 		${0}
 		return 0;
@@ -115,12 +115,14 @@ snippet ret
 ## Loops
 # for
 snippet for
-	for (int ${2:i} = 0; $2 < ${1:count}; $2${3:++}) {
+	for (int ${2:i} = 0; $2 < ${1:count}; $2${3:++})
+	{
 		${4}
 	}
 # for (custom)
 snippet forr
-	for (int ${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) {
+	for (int ${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++})
+	{
 		${5}
 	}
 # while
@@ -344,3 +346,79 @@ snippet todo
 # This is kind of convenient
 snippet .
 	[${1}]
+
+snippet ifeq
+	if (${1:expr} == ${2:expr})
+	{
+		// ${3:statement}
+	}
+snippet ifneq
+	if (${1:expr} != ${2:expr})
+	{
+		// ${3:statement}
+	}
+snippet iflt
+	if (${1:expr} < ${2:expr})
+	{
+		// ${3:statement}
+	}
+snippet iflteq
+	if (${1:expr} <= ${2:expr})
+	{
+		// ${3:statement}
+	}
+snippet ifgt
+	if (${1:expr} > ${2:expr})
+	{
+		// ${3:statement}
+	}
+snippet ifgteq
+	if (${1:expr} >= ${2:expr})
+	{
+		// ${3:statement}
+	}
+snippet ift
+	if (${1:true})
+	{
+		${0:${VISUAL}}
+	}
+snippet ifet
+	if (${1:true})
+	{
+		${2:${VISUAL}}
+	}
+	else
+	{
+		${0}
+	}
+# else
+snippet elt
+	else
+	{
+		${0:${VISUAL}}
+	}
+# else if
+snippet elift
+	else if (${1:true})
+	{
+		${0:${VISUAL}}
+	}
+snippet switcht
+	switch (${1:/* variable */})
+	{
+	case ${2:/* variable case */}:
+		${3}
+		${4:break;}${5}
+	default:
+		${6}
+	}
+snippet ifr
+	if (${1:name} >= ${2} && ${1:name} <= ${3})
+	{
+		${0}
+	}
+snippet ifnr
+	if (${1:name} < ${2} || ${1:name} > ${3})
+	{
+		${0}
+	}
