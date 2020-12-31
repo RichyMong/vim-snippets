@@ -180,6 +180,19 @@ snippet cca
 snippet cae
 	${1:type} ${2:var} = ($1) ${3:expr};
 
+# for WX
+snippet cstu32
+	const u32 ${1:var} = {$2:0};
+
+snippet csts32
+	const s32 ${1:var} = {$2:0};
+
+snippet cstf32
+	const f32 ${1:var} = {$2:.0f};
+
+snippet cststr
+	const std::string &${1:var} = ${2:expr};
+
 ## Iteration
 # for i
 snippet fori
@@ -304,24 +317,24 @@ snippet mutableg
 			const_cast<const ${3:cls}*>(this)->$2());
 	}
 
-# p for primitive type, c for complex type, s for set, g for get
-snippet memps
+# r for reference, v for value, s for set, g for get
+snippet memvs
 	void set_${1:name}(${2:type} v) { $1_ = v; }
 
-snippet mempg
+snippet memvg
 	${1:T} ${2:name}() const { return $2_; }
 
-snippet mempsg
+snippet memvsg
 	${1:T} ${2:name}() const { return $2_; }
 	void set_$2($1 v) { $2_ = v; }
 
-snippet memcs
+snippet memvs
 	void set_${1:name}(const ${2:type} &v) { $1_ = v; }
 
-snippet memcg
+snippet memvg
 	const ${1:type}& ${2:name}() const { return $2_; }
 
-snippet memcsg
+snippet memvsg
 	const ${1:T}& ${2:name}() const { return $2_; }
 	void set_$1(const $2 &v) { $1_ = v; }
 
@@ -492,3 +505,15 @@ snippet ns_google_pb
 			class Message;
 		} // protobuf
 	} // google
+
+snippet opm<
+	bool operator<(const {$1:T} &other) const
+	{
+		${2:return true;}
+	}
+
+snippet opm=
+	bool operator==(const {$1:T} &other) const
+	{
+		${2:return false;}
+	}

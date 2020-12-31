@@ -347,6 +347,7 @@ snippet todo
 snippet .
 	[${1}]
 
+<<<<<<< HEAD
 snippet ifeq
 	if (${1:expr} == ${2:expr})
 	{
@@ -422,3 +423,9 @@ snippet ifnr
 	{
 		${0}
 	}
+snippet asm
+	__asm__ __volatile__(
+	"${0}\n\t"
+	:
+	:
+	);
