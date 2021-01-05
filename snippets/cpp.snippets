@@ -328,13 +328,13 @@ snippet memvsg
 	${1:T} ${2:name}() const { return $2_; }
 	void set_$2($1 v) { $2_ = v; }
 
-snippet memvs
+snippet memrs
 	void set_${1:name}(const ${2:type} &v) { $1_ = v; }
 
-snippet memvg
+snippet memrg
 	const ${1:type}& ${2:name}() const { return $2_; }
 
-snippet memvsg
+snippet memrsg
 	const ${1:T}& ${2:name}() const { return $2_; }
 	void set_$1(const $2 &v) { $1_ = v; }
 
