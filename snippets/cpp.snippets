@@ -390,20 +390,33 @@ snippet iffl
 	ret = ${1:func}(${2:args});
 	if (ret != 0)
 	{
-		error_tlog("$1 failed, ret<%d>", ret);
+		error_tlog("$1 failed, ret=%d", ret);
+	}
+
+snippet iffls
+	ret = ${1:func}(${2:args});
+	if (ret != 0)
+	{
+		error_tlog("$1 failed, ret=%s", MTErrorDefine_Name(ret).c_str());
 	}
 
 snippet iflg
 	if (ret != 0)
 	{
-		error_tlog("${1:func} failed, ret<%d>", ret);
+		error_tlog("${1:func} failed, ret=%d", ret);
+	}
+
+snippet iflgs
+	if (ret != 0)
+	{
+		error_tlog("${1:func} failed, ret=%s", MTErrorDefine_Name(ret).c_str());
 	}
 
 snippet ifdfl
 	s32 ret = ${1:func}(${2:args});
 	if (ret != 0)
 	{
-		error_tlog("$1 failed, ret<%d>", ret);
+		error_tlog("$1 failed, ret=%d", ret);
 	}
 
 snippet ifp
@@ -429,6 +442,11 @@ snippet ifait
 snippet enumt
 	enum ${1:name}
 	{
+		${0}
+	};
+
+snippet enumc
+	enum class ${1:name} : int {
 		${0}
 	};
 

@@ -109,12 +109,12 @@ snippet cla "An entire .h generator" b
 
 class ${1:`!v substitute(substitute(vim_snippets#Filename('$1','ClassName'),'^.','\u&',''), '_\(\w\)', '\u\1', 'g')`}
 {
-private:
-	$3
-
 public:
 	$1();
 	virtual ~$1();
+
+private:
+	$3
 };
 
 #endif /* $2 */
@@ -197,4 +197,28 @@ BOOST_AUTO_TEST_CASE(${4:TestCaseName})
 BOOST_AUTO_TEST_SUITE_END()
 
 endsnippet
+
+snippet findv "find in std::vector"
+auto it = std::find(${1:vec}.begin(), $1.end(), ${2:var});
+endsnippet
+
+snippet clscst "Class constructor" b
+${1:`!v substitute(substitute(vim_snippets#Filename('$1','ClassName'),'^.','\u&',''), '_\(\w\)', '\u\1', 'g')`}::${1/(\w+).*/$1/}($2)
+{
+}
+endsnippet
+
+snippet clsdst "Class destructor" b
+${1:`!v substitute(substitute(vim_snippets#Filename('$1','ClassName'),'^.','\u&',''), '_\(\w\)', '\u\1', 'g')`}::~${1/(\w+).*/$1/}()
+{
+}
+endsnippet
+
+snippet clsfnc "Class member function definition" b
+${1:ReturnType} ${2:`!v substitute(substitute(vim_snippets#Filename('$1','ClassName'),'^.','\u&',''), '_\(\w\)', '\u\1', 'g')`}::${3:FunctionName}(${4:param})
+{
+	${5:FunctionBody}
+}
+endsnippet
+
 # vim:ft=snippets:
