@@ -205,7 +205,11 @@ BOOST_AUTO_TEST_SUITE_END()
 endsnippet
 
 # Here start ououmania's snippets
-snippet incr "relative include a file" b
+snippet incc "include a file absolutely" b
+#include <${1:iostream}>
+endsnippet
+
+snippet incr "include a file relatively" b
 #include "${1:iostream}"
 endsnippet
 
@@ -216,53 +220,54 @@ auto ${1:name}(${2:args}) -> ${3:void}
 };
 endsnippet
 
-snippet ifnot "simply if!" b
+snippet if_not "simply if! block" b
 if (!${1:expr})
 {
 	${2}
 }
 endsnippet
 
-snippet ifnonnull "simply if != nullptr" b
+snippet if_not_null "simply if != nullptr block" b
 if (${1:name} != nullptr)
 {
-	${2}
+	${2:statement};
 }
 endsnippet
 
-snippet ifnull "simply if == nullptr" b
+snippet if_null "simply if == nullptr block" b
 if (${1:name} == nullptr)
 {
-	${2}
+	${2:statement};
 }
 endsnippet
 
-snippet ifempty "if a container is empty" b
+snippet if_empty "if a container is empty" b
 if (${1:name}.empty())
 {
-	${2}
+	${2:statement};
 }
 endsnippet
 
-snippet ifnonempty "if a container is not empty" b
+snippet if_not_empty "if a container is not empty" b
 if (!${1:name}.empty())
 {
-	${2}
+	${2:statement};
 }
 endsnippet
 
-snippet iflikely "if likely" b
+snippet if_likely "if likely" b
 if (likely(${1:expr}))
 {
-	${2:statement}
+	${2:statement};
 }
 endsnippet
 
-snippet ifunlikey "if unlikely" b
+snippet if_unlikey "if unlikely" b
 if (unlikely(${1:expr}))
 {
-	${2:statement}
+	${2:statement};
 }
+endsnippet
 
 snippet clv
 class ${1:`!p camel_case_cls_name_from_file()`}
@@ -276,7 +281,7 @@ private:
 };
 endsnippet
 
-snippet cls_noncopyable "A noncopyable class with name as camel case file name" b
+snippet cls_noncopyable_def "A noncopyable class with name as camel case file name" b
 class ${1:`!p camel_case_cls_name_from_file()`}
 {
 public:
@@ -410,7 +415,7 @@ for (int ${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) {
 }
 endsnippet
 
-snippet dot "do while 0" b
+snippet do_while "do while" b
 do {
 	${0:${VISUAL}}
 } while (${1:/* condition */});
@@ -430,6 +435,16 @@ endsnippet
 
 snippet ptr_triple "use triple operator to check if an pointer is null"
 (${1:name} != nullptr ? {$2:valid-expr} : ${3:null-expr})
+endsnippet
+
+snippet ns_google_pb "google protobuf Message forward declaration" b
+namespace google
+{
+	namespace protobuf
+	{
+		class Message;
+	} // protobuf
+} // google
 endsnippet
 
 snippet pbmsg_forward_decl "google protobuf Message forward declaration" b
@@ -512,36 +527,40 @@ snippet c_cast "c style cast" b
 ${1:type} ${2:var} = ($1) ${3:expr};
 endsnippet
 
-snippet cstint "const int value" b
+snippet cst_int "const int value" b
 const int ${1:var} = ${2:0};
 endsnippet
 
-snippet cststr "const std::string reference" b
+snippet cst_str "const std::string reference" b
 const std::string &${1:var} = ${2:expr};
 endsnippet
 
-snippet forav "for range loop value" b
+snippet for_rav "for range loop auto value" b
 for (auto ${1:x} : ${2}) {
 	${3}
 }
 endsnippet
 
-snippet forcav "for range loop const value" b
+snippet for_rcav "for range loop const auto value" b
 for (const auto ${1:x} : ${2}) {
 	${3}
 }
 endsnippet
 
-snippet forar "for range loop reference" b
+snippet for_rar "for range loop auto reference" b
 for (auto &${1:x} : ${2}) {
 	${3}
 }
 endsnippet
 
-snippet forcar "for range loop const reference" b
+snippet for_rcar "for range loop const auto reference" b
 for (const auto &${1:x} : ${2}) {
 	${3}
 }
+endsnippet
+
+snippet std_alg_container "call algorithm on a container's begin & end" b
+auto ${4:result} = std::{1:algorithm}(${2:vec}.begin(), $2.end(), [](const auto &x) { ${3:block}; });
 endsnippet
 
 snippet findv "find in std::vector" b
@@ -568,25 +587,33 @@ ${1:`!p camel_case_cls_name_from_file()`}::~${1/(\w+).*/$1/}()
 }
 endsnippet
 
-snippet cls_fun "Class member function definition" b
+snippet cls_mfun "Class member function definition" b
 ${1:ReturnType} ${2:`!p camel_case_cls_name_from_file()`}::${3:FunctionName}(${4:param})
 {
 	${5:FunctionBody}
 }
 endsnippet
 
-snippet noncopyable "a noncopyable class definition" b
+snippet cls_noncopyable "a noncopyable class definition" b
 ${1:`!p camel_case_cls_name_from_file()`}(const $1 &) = delete;
 $1& operator=(const $1 &) = delete;
 endsnippet
 
 # for ACM
 snippet cst_u32 "const u32 value" b
-const u32 ${1:var} = ${2:0};
+const uint32_t ${1:var} = ${2:0};
 endsnippet
 
 snippet cst_f32 "const u32 value" b
-const f32 ${1:var} = ${2:.0f};
+const float ${1:var} = ${2:.0f};
+endsnippet
+
+snippet cst_u64 "const u64 value" b
+const uint64_t ${1:var} = ${2:0};
+endsnippet
+
+snippet cst_i64 "const i64 value" b
+const int64_t ${1:var} = ${2:0};
 endsnippet
 
 snippet if_func_err_log "function call and write error log" b
@@ -597,7 +624,7 @@ if (ret != 0)
 }
 endsnippet
 
-snippet iffls "function call and write error log with error define string" b
+snippet if_func_err_code "function call and write error log with error define string" b
 ret = ${1:func}(${2:args});
 if (ret != 0)
 {
@@ -626,6 +653,74 @@ if (${1:name})
 	error_tlog("invalid args");
 	return E_WX_ERROR_INVALID_PARA;
 }
+endsnippet
+
+snippet cls_noncopyable_def "a noncopyable class definition" b
+class ${1:`!p camel_case_cls_name_from_file()`}
+{
+public:
+	$1(${2});
+	~$1();
+
+	$1(const $1 &) = delete;
+	$1& operator=(const $1 &) = delete;
+
+private:
+	${3} ${4}_;
+};
+endsnippet
+
+# const getter
+snippet constg
+	const ${1:T} ${2:name}() const { return ${3:member}; }
+endsnippet
+
+snippet do_while_0 "do while 0" b
+	do
+	{
+		${0}
+	}
+	while (0);
+endsnippet
+
+snippet if0 "if equal 0" b
+	if (${1:name} == 0)
+	{
+		${0}
+	}
+endsnippet
+
+snippet ifn0 "if not equal 0" b
+	if (${1:name} != 0)
+	{
+		${0}
+	}
+endsnippet
+
+snippet end_triple
+	${1:name} == ${2:container}.end() ? {$2:valid-expr} : ${3:end-expr};
+endsnippet
+
+snippet ptr_triple
+	(${1:name} != nullptr ? {$2:valid-expr} : ${3:null-expr});
+endsnippet
+
+snippet opm< "operator < than definition" b
+bool operator<(const {$1:T} &other) const
+{
+	${2:return true;}
+}
+endsnippet
+
+snippet opm= "operator == than definition" b
+bool operator==(const {$1:T} &other) const
+{
+	${2:return false;}
+}
+endsnippet
+
+snippet uns "using namespace" b
+	using namespace ${1:std};
 endsnippet
 
 # vim:ft=snippets:
