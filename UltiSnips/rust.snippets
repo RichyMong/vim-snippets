@@ -51,6 +51,12 @@ impl$4 ${1:Type/Trait}${2: for ${3:Type}}${4:<${5:T}>} {
 endsnippet
 
 # snippets by ououmania
+snippet implf "Implement trait for struct" b
+impl$3 ${1:Trait} for ${2:Type}${3:<${4:T}>} {
+	${0}
+}
+endsnippet
+
 snippet implst "Implement struct" b
 impl ${1:} {
 }
@@ -66,6 +72,10 @@ snippet stfnn "Struct fn with at least one parameter" b
 fn ${1:function_name}(&self, $2)${3/..*/ -> /}$3 {
 	${VISUAL}$0
 }
+endsnippet
+
+snippet typedef "Type alias" b
+type ${1:a} = ${2:b};
 endsnippet
 
 snippet lettp "Tuple declaration" b
@@ -84,6 +94,38 @@ snippet letst "Declare a struct variable" b
 let ${0:s} = ${1:Struct} {
 	${VISUAL}$2
 };
+endsnippet
+
+snippet cmfun "Member function of struct" b
+fn ${1:function_name}(&self$2)${3/..*/ -> /}$3 {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet pcmfun "Member function of struct" b
+pub fn ${1:function_name}(&self$2)${3/..*/ -> /}$3 {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet mfun "Mutable member function of struct" b
+fn ${1:function_name}(&mut self$2)${3/..*/ -> /}$3 {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet pmfun "Mutable member function of struct" b
+pub fn ${1:function_name}(&mut self$2)${3/..*/ -> /}$3 {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet useas "Use one as another" b
+use ${1:one} as ${2:another};
+endsnippet
+
+snippet usestd "Use std" b
+use std::${1};
 endsnippet
 
 # vim:ft=snippets:
