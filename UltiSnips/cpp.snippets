@@ -72,10 +72,10 @@ private:
 endsnippet
 
 snippet nns "named namespace .. (namespace)"
-namespace${1/.+/ /m}${1:`!p snip.rv = snip.basename or "name"`}
+namespace ${1:`!p snip.rv = snip.basename or "name"`}
 {
 ${VISUAL}$0
-} // namespace${1/.+/ /m}$1${1/.+/ /m}
+} // namespace $1
 endsnippet
 
 snippet nsa "namespace alias"
@@ -223,49 +223,49 @@ endsnippet
 snippet if_not "simply if! block" b
 if (!${1:expr})
 {
-	${2}
+	${2:${VISUAL:statement}}
 }
 endsnippet
 
 snippet if_not_null "simply if != nullptr block" b
 if (${1:name} != nullptr)
 {
-	${2:statement};
+	${2:${VISUAL:statement}}
 }
 endsnippet
 
 snippet if_null "simply if == nullptr block" b
 if (${1:name} == nullptr)
 {
-	${2:statement};
+	${2:${VISUAL:statement}}
 }
 endsnippet
 
 snippet if_empty "if a container is empty" b
 if (${1:name}.empty())
 {
-	${2:statement};
+	${2:${VISUAL:statement}}
 }
 endsnippet
 
 snippet if_not_empty "if a container is not empty" b
 if (!${1:name}.empty())
 {
-	${2:statement};
+	${2:${VISUAL:statement}}
 }
 endsnippet
 
 snippet if_likely "if likely" b
 if (likely(${1:expr}))
 {
-	${2:statement};
+	${2:${VISUAL:statement}}
 }
 endsnippet
 
 snippet if_unlikey "if unlikely" b
 if (unlikely(${1:expr}))
 {
-	${2:statement};
+	${2:${VISUAL:statement}}
 }
 endsnippet
 
@@ -591,6 +591,7 @@ snippet cls_mfun "Class member function definition" b
 ${1:ReturnType} ${2:`!p camel_case_cls_name_from_file()`}::${3:FunctionName}(${4:param})
 {
 	${5:FunctionBody}
+	${6:`!p t[1] == "void"`}
 }
 endsnippet
 
@@ -632,10 +633,10 @@ if (ret != 0)
 }
 endsnippet
 
-snippet if_err_log "if ret != 0 then error_tlog" b
-if (ret != 0)
+snippet if_err_log "if ret != 0 then error_tlog" "re.match('\s*(\w*?) (\w+)\s*=\s*([\w\.]+)\(.*', snip.buffer[snip.line-1])" be
+if (`!p snip.rv = snip.context.group(2)` != 0)
 {
-	error_tlog("`!p import re; snip.rv = re.split("[^\w]",t[1])[-1]` failed, ret=%d", ret);
+	error_tlog("`!p snip.rv = snip.context.group(3)` failed, ret=%d", `!p snip.rv = snip.context.group(2)`);
 }
 endsnippet
 
@@ -720,7 +721,22 @@ bool operator==(const {$1:T} &other) const
 endsnippet
 
 snippet uns "using namespace" b
-	using namespace ${1:std};
+using namespace ${1:std};
+endsnippet
+
+snippet ifdef "if define" b
+#ifdef ${1:SOME_DEFINE}
+${2}
+#else // not defined $1
+${3}
+#endif // $1
+endsnippet
+
+snippet ifndef "if not define" b
+#ifndef ${1:SOME_DEFINE}
+#define $1
+$0
+#endif // $1
 endsnippet
 
 # vim:ft=snippets:
