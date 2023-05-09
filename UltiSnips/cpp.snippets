@@ -39,14 +39,16 @@ def _acm_get_log_macro(path : str, log_type: str) -> str:
 			return 'error_tlog'
 		return f'{log_type}_tlog'
 	mid_dir, filename = m.group(1), m.group(2)
-	if filename.endswith("_module"):
-		return f'module_{log_type}'
-	elif filename.startswith("level_event_"):
+	if filename.startswith("level_event_"):
 		if log_type == 'error_code':
 			return 'ace_error_code'
 		elif log_type == 'error_msg':
 			return 'ace_error'
 		return f'ace_{log_type}'
+	if log_type == 'error_code':
+		log_type = 'error'
+	if filename.endswith("_module"):
+		return f'module_{log_type}'
 	elif mid_dir == 'level':
 		return f'level_{log_type}'
 	return f'sys_{log_type}'
