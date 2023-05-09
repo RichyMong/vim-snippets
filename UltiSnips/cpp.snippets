@@ -30,6 +30,46 @@ def camel_case_cls_name_from_file():
 	fields = os.path.splitext(fn)[0].split('_')
 	snip.rv = ''.join(x.capitalize() for x in fields)
 
+# log_type: debug, infor, error_code, error_msg
+def _acm_get_log_macro(path : str, log_type: str) -> str:
+	import re
+	m = re.match(r".*ACMobileServer/src/scene/(?:(\w+)/)?.*?(\w+)\.(?:h|cpp)", path)
+	if m is None:
+		if log_type.startswith('error_'):
+			return 'error_tlog'
+		return f'{log_type}_tlog'
+	mid_dir, filename = m.group(1), m.group(2)
+	if filename.endswith("_module"):
+		return f'module_{log_type}'
+	elif filename.startswith("level_event_"):
+		if log_type == 'error_code':
+			return 'ace_error_code'
+		elif log_type == 'error_msg':
+			return 'ace_error'
+		return f'ace_{log_type}'
+	elif mid_dir == 'level':
+		return f'level_{log_type}'
+	return f'sys_{log_type}'
+
+def acm_get_macro_by_buffer(log_type: str) -> str:
+	return _acm_get_log_macro(vim.current.buffer.name, log_type)
+
+def acm_error_log(s: str):
+	import vim
+	log_macro = acm_get_macro_by_buffer("error_msg")
+	snip.rv = f'{log_macro}("{s}");'
+
+def acm_error_log_func(func_call: str, rcvar: str = 'ret'):
+	import re, vim
+	func_name = re.split("[^\w]", func_call)[-1]
+	# both "path" and "fn" gives relative path
+	log_macro = acm_get_macro_by_buffer("error_code")
+	if log_macro == "error_tlog" or log_macro == "ace_error":
+		log_str = f'{log_macro}("{func_name} failed, {rcvar}=%d:%s", {rcvar}, MTErrorDefine_Name({rcvar}).c_str());'
+	else:
+		log_str = f'{log_macro}({rcvar}, "{func_name} failed");'
+	return log_str
+
 
 endglobal
 
@@ -395,7 +435,7 @@ enum class ${1:name} : ${2:int} {
 endsnippet
 
 snippet error_invalid_arg
-error_tlog("invalid args");
+`!p import re; snip.rv = acm_error_log("invalid args")`
 return E_WX_ERROR_INVALID_PARA;
 endsnippet
 
@@ -403,7 +443,7 @@ snippet error_resource_not_exist
 const auto *${1:res_ptr} = ResMgrInst.Get${2:ResFunc}(${3:id});
 if ($1 == nullptr)
 {
-	error_tlog("Get$2=${4:%u} failed", $3);
+	`!p import re; snip.rv = acm_error_log("invalid args")`
 	return E_WX_ERROR_RESOURCE_NOT_EXIST;
 }
 endsnippet
@@ -483,24 +523,6 @@ snippet pb_repptr_def "protobuf RepeatedPtrField definition"
 google::protobuf::RepeatedPtrField<${1:T}> &${2:var}${3:;}
 endsnippet
 
-snippet opm< "operator <" b
-bool operator<(const {$1:T} &other) const
-{
-	${2:return true;}
-}
-endsnippet
-
-snippet opm= "operator ==" b
-bool operator==(const {$1:T} &other) const
-{
-	${2:return false;}
-}
-endsnippet
-
-snippet uns "using namespace" b
-using namespace ${1:std};
-endsnippet
-
 snippet forait "for auto iterator" b
 for (auto ${1:it} = ${2:container}.begin(); $1 != $2.end(); ++$1) {
 	${0}
@@ -531,8 +553,12 @@ snippet cst_int "const int value" b
 const int ${1:var} = ${2:0};
 endsnippet
 
-snippet cst_str "const std::string reference" b
+snippet cst_str_def "const std::string reference" b
 const std::string &${1:var} = ${2:expr};
+endsnippet
+
+snippet cst_str_ref "const std::string reference" b
+const std::string &${1:var}
 endsnippet
 
 snippet for_rav "for range loop auto value" b
@@ -621,22 +647,22 @@ snippet if_func_err_log "function call and write error log" b
 ret = ${1:func}(${2:args});
 if (ret != 0)
 {
-	error_tlog("`!p import re; snip.rv = re.split("[^\w]",t[1])[-1]` failed, ret=%d", ret);
+	`!p import re; snip.rv = acm_error_log_func(t[1])`
 }
 endsnippet
 
-snippet if_func_err_code "function call and write error log with error define string" b
+snippet if_error_func_call "function call and write error log without define ret" b
 ret = ${1:func}(${2:args});
 if (ret != 0)
 {
-	error_tlog("`!p import re; snip.rv = re.split("[^\w]",t[1])[-1]` failed, ret=%s", MTErrorDefine_Name(ret).c_str());
+	`!p import re; snip.rv = acm_error_log_func(t[1])`
 }
 endsnippet
 
-snippet if_err_log "if ret != 0 then error_tlog" "re.match('\s*(\w*?) (\w+)\s*=\s*([\w\.]+)\(.*', snip.buffer[snip.line-1])" be
-if (`!p snip.rv = snip.context.group(2)` != 0)
+snippet if_err_log "if ret != 0 then error_tlog" "re.match(r'^\s*\w*\s*(\w+)\s*=\s*(\w+)', snip.buffer[snip.line-1])" be
+if (`!p snip.rv = snip.context.group(1)` != 0)
 {
-	error_tlog("`!p snip.rv = snip.context.group(3)` failed, ret=%d", `!p snip.rv = snip.context.group(2)`);
+	`!p import re; snip.rv = acm_error_log_func(snip.context.group(2), snip.context.group(1))`
 }
 endsnippet
 
@@ -644,16 +670,28 @@ snippet if_def_ret_log "define ret as function call result and then check error_
 int ret = ${1:func}(${2:args});
 if (ret != 0)
 {
-	error_tlog("`!p import re; snip.rv = re.split("[^\w]",t[1])[-1]` failed, ret=%d", ret);
+	`!p import re; snip.rv = acm_error_log_func(re.split("[^\w]",t[1])[-1])`
 }
 endsnippet
 
 snippet if_invalid_arg "check arguments and return invalid arg" b
 if (${1:name})
 {
-	error_tlog("invalid args");
+	`!p import re; snip.rv = acm_error_log("invalid args")`
 	return E_WX_ERROR_INVALID_PARA;
 }
+endsnippet
+
+snippet acm_debug "acm debug log" b
+`!p snip.rv = acm_get_macro_by_buffer("debug")`("${1:fmt}");
+endsnippet
+
+snippet acm_error "acm error log" b
+`!p snip.rv = acm_get_macro_by_buffer("error_msg")`("${1:fmt}");
+endsnippet
+
+snippet acm_infor "acm infor log" b
+`!p snip.rv = acm_get_macro_by_buffer("infor")`("${1:fmt}");
 endsnippet
 
 snippet cls_noncopyable_def "a noncopyable class definition" b
