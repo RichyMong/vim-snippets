@@ -50,4 +50,40 @@ impl$4 ${1:Type/Trait}${2: for ${3:Type}}${4:<${5:T}>} {
 }
 endsnippet
 
+# snippets by ououmania
+snippet implst "Implement struct" b
+impl ${1:} {
+}
+endsnippet
+
+snippet stfn0 "Struct fn with no parameter" b
+fn ${1:function_name}(&self)${2/..*/ -> /}$2 {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet stfnn "Struct fn with at least one parameter" b
+fn ${1:function_name}(&self, $2)${3/..*/ -> /}$3 {
+	${VISUAL}$0
+}
+endsnippet
+
+snippet lettp "Tuple declaration" b
+let ${0:x} : (${1}, ${2}) = (${3}, ${4});
+endsnippet
+
+snippet letmr "Mutable reference" b
+let ${0:r} = &mut ${1:v};
+endsnippet
+
+snippet letsf "String from" b
+let ${0:s} = String::from(${1:"hello world"});
+endsnippet
+
+snippet letst "Declare a struct variable" b
+let ${0:s} = ${1:Struct} {
+	${VISUAL}$2
+};
+endsnippet
+
 # vim:ft=snippets:
