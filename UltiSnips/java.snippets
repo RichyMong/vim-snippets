@@ -432,4 +432,34 @@ while ($1)`!p nl(snip)`{
 }
 endsnippet
 
+# added by ououmania
+snippet if_null "if null" b
+if ($0 == null) {
+	$1
+}
+endsnippet
+
+snippet if_null_else "if null then else" b
+if ($0 == null) {
+	$1
+} else {
+	$2
+}
+endsnippet
+
+snippet if_not_null "if null" b
+if ($0 != null) {
+	$1
+}
+endsnippet
+
+snippet if_not_null_else "if not null then else" b
+if ($0 != null) {
+	$1
+} else {
+	$2
+}
+endsnippet
+# end added by ououmania
+
 # vim:ft=snippets:
