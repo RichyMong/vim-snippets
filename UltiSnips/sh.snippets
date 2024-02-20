@@ -103,4 +103,33 @@ ${1:function} () {
 }
 endsnippet
 
+#################### ououmaia starts ####################
+
+snippet /if[_-]else/ "if ... then ... else" b
+if [[ ${1:condition} ]]; then
+	${0}
+else
+	${2}
+fi
+endsnippet
+
+snippet /if[_-]while/ "if which xxx then" b
+if which ${0:cmd} 2>/dev/null; then
+	${1:statement}
+fi
+endsnippet
+
+snippet readcmd "read from a command's output" b
+while read -r ${1:var}; do
+	${0:statement}
+done < <(${2:cmd})
+endsnippet
+
+
+snippet sdir-symlink "script dir following symlink" b
+	SCRIPT_DIR="\$(dirname \$(readlink -f "\$0"))"
+endsnippet
+
+#################### ououmaia ends ####################
+
 # vim:ft=snippets:

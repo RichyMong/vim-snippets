@@ -434,13 +434,13 @@ endsnippet
 
 # added by ououmania
 snippet if_null "if null" b
-if ($0 == null) {
+if (${0:var} == null) {
 	$1
 }
 endsnippet
 
 snippet if_null_else "if null then else" b
-if ($0 == null) {
+if (${0:var} == null) {
 	$1
 } else {
 	$2
@@ -448,16 +448,70 @@ if ($0 == null) {
 endsnippet
 
 snippet if_not_null "if null" b
-if ($0 != null) {
+if (${0:var} != null) {
 	$1
 }
 endsnippet
 
 snippet if_not_null_else "if not null then else" b
-if ($0 != null) {
+if (${0:var} != null) {
 	$1
 } else {
 	$2
+}
+endsnippet
+
+snippet if_zero "if zero" b
+if ($0 == 0) {
+	$1
+}
+endsnippet
+
+snippet if_zero_else "if zero then else" b
+if (${0:var} == 0) {
+	$1
+} else {
+	$2
+}
+endsnippet
+
+snippet if_not_zero "if zero" b
+if (${0:var} != 0) {
+	$1
+}
+endsnippet
+
+snippet if_not_zero_else "if not zero then else" b
+if (${0:var} != 0) {
+	$1
+} else {
+	$2
+}
+endsnippet
+
+snippet i.j.i "import java.io." i
+import java.io.${0:package};
+endsnippet
+
+snippet i.j.m "import java.math." i
+import java.math.${0:package};
+endsnippet
+
+snippet i.j.u "import java.util."  i
+import java.util.${0:stream}
+endsnippet
+
+snippet cls_singleton "define a singleton class with an instance holder" b
+public class ${1:`!p
+snip.rv = snip.basename or "untitled"`} ${2:extends ${3:Parent} }${4:implements ${5:Interface} }{
+	$0
+	public static $1 getInstance() {
+		return InstanceHolder.INSTANCE;
+    }
+
+	static private class InstanceHolder {
+		public static $1 INSTANCE = new $1();
+	}
 }
 endsnippet
 # end added by ououmania

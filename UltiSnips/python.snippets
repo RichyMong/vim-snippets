@@ -780,6 +780,23 @@ $0
 endsnippet
 
 # Here start ououmnia's snippets.
+snippet from_any "import type hint Any" b
+from typing import Any
+endsnippet
+
+snippet from_list "import type hint List" b
+from typing import List
+endsnippet
+
+snippet from_iterable "import type hint Iterable" b
+from collections.abc import Iterable
+endsnippet
+
+snippet exception "custom Exception" b
+class ${1:CustomError}(RuntimeError):
+	pass
+endsnippet
+
 snippet dict_get "dict get with default" b
 ${1:x} = ${2:dict}.get(${3:key}, ${4:None})
 if not ${1}:
