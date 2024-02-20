@@ -19,6 +19,22 @@ FIELD_TYPES = [
 	'bool',
 	'string',
 	'bytes']
+
+PACKABLE_FIELD_TYPES = [
+	'double',
+	'float',
+	'int32',
+	'int64',
+	'uint32',
+	'uint64',
+	'sint32',
+	'sint64',
+	'fixed32',
+	'fixed64',
+	'sfixed32',
+	'sfixed64',
+	'bool']
+
 endglobal
 
 snippet mess "Proto message" b
@@ -50,3 +66,31 @@ snippet enum "Enumeration" b
 enum ${1:Name} {
 }
 endsnippet
+
+
+##### Here start ououmania's snippets
+snippet tmess "Proto message" b
+message ${1:Name}
+{
+	$0
+}
+endsnippet
+
+snippet tenum "Enumeration" b
+enum ${1:Name}
+{
+}
+endsnippet
+
+snippet toptf "Optional field" b
+optional $1`!p snip.rv = complete(t[1], FIELD_TYPES)` ${2:name} = ${3:1};
+endsnippet
+
+snippet trepfp "Packed repeated field" b
+repeated $1`!p snip.rv = complete(t[1], PACKABLE_FIELD_TYPES)` ${2:name} = ${3:1} [packed=true];
+endsnippet
+
+snippet trepf "Repeated field" b
+repeated $1`!p snip.rv = complete(t[1], FIELD_TYPES)` ${2:name} = ${3:1};
+endsnippet
+

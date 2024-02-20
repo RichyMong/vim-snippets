@@ -390,3 +390,81 @@ snippet asm
 	:
 	:
 	);
+
+
+# Here start ououmania's snppets
+snippet ifeq
+	if (${1:expr} == ${2:expr})
+	{
+		// ${3:statement}
+	}
+snippet ifneq
+	if (${1:expr} != ${2:expr})
+	{
+		// ${3:statement}
+	}
+snippet iflt
+	if (${1:expr} < ${2:expr})
+	{
+		// ${3:statement}
+	}
+snippet iflteq
+	if (${1:expr} <= ${2:expr})
+	{
+		// ${3:statement}
+	}
+snippet ifgt
+	if (${1:expr} > ${2:expr})
+	{
+		// ${3:statement}
+	}
+snippet ifgteq
+	if (${1:expr} >= ${2:expr})
+	{
+		// ${3:statement}
+	}
+snippet ift
+	if (${1:true})
+	{
+		${0:${VISUAL}}
+	}
+snippet ifet
+	if (${1:true})
+	{
+		${2:${VISUAL}}
+	}
+	else
+	{
+		${0}
+	}
+# else
+snippet elt
+	else
+	{
+		${0:${VISUAL}}
+	}
+# else if
+snippet elift
+	else if (${1:true})
+	{
+		${0:${VISUAL}}
+	}
+snippet switcht
+	switch (${1:/* variable */})
+	{
+	case ${2:/* variable case */}:
+		${3}
+		${4:break;}${5}
+	default:
+		${6}
+	}
+snippet ifr
+	if (${1:name} >= ${2} && ${1:name} <= ${3})
+	{
+		${0}
+	}
+snippet ifnr
+	if (${1:name} < ${2} || ${1:name} > ${3})
+	{
+		${0}
+	}
