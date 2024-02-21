@@ -269,6 +269,10 @@ if (!${1:expr})
 }
 endsnippet
 
+snippet nullptr_def "define a nullptr variable" b
+${1:type} *${2:var} = nullptr;
+endsnippet
+
 snippet if_not_null "simply if != nullptr block" b
 if (${1:name} != nullptr)
 {
@@ -436,12 +440,12 @@ enum class ${1:name} : ${2:int} {
 };
 endsnippet
 
-snippet error_invalid_arg
+snippet acm_error_invalid_arg
 `!p import re; snip.rv = acm_error_log("invalid args")`
 return E_WX_ERROR_INVALID_PARA;
 endsnippet
 
-snippet error_resource_not_exist
+snippet acm_error_resource_not_exist
 const auto *${1:res_ptr} = ResMgrInst.Get${2:ResFunc}(${3:id});
 if ($1 == nullptr)
 {
@@ -551,10 +555,6 @@ snippet c_cast "c style cast" b
 ${1:type} ${2:var} = ($1) ${3:expr};
 endsnippet
 
-snippet cst_int "const int value" b
-const int ${1:var} = ${2:0};
-endsnippet
-
 snippet cst_str_def "const std::string reference" b
 const std::string &${1:var} = ${2:expr};
 endsnippet
@@ -628,7 +628,10 @@ ${1:`!p camel_case_cls_name_from_file()`}(const $1 &) = delete;
 $1& operator=(const $1 &) = delete;
 endsnippet
 
-# for ACM
+snippet cst_int "const int value" b
+const int ${1:var} = ${2:0};
+endsnippet
+
 snippet cst_u32 "const u32 value" b
 const uint32_t ${1:var} = ${2:0};
 endsnippet
@@ -645,7 +648,8 @@ snippet cst_i64 "const i64 value" b
 const int64_t ${1:var} = ${2:0};
 endsnippet
 
-snippet if_func_err_log "function call and write error log" b
+# for ACM
+snippet acm_if_func_err_log "function call and write error log" b
 ret = ${1:func}(${2:args});
 if (ret != 0)
 {
@@ -653,7 +657,7 @@ if (ret != 0)
 }
 endsnippet
 
-snippet if_error_func_call "function call and write error log without define ret" b
+snippet acm_if_error_func_call "function call and write error log without define ret" b
 ret = ${1:func}(${2:args});
 if (ret != 0)
 {
@@ -661,14 +665,14 @@ if (ret != 0)
 }
 endsnippet
 
-snippet if_err_log "if ret != 0 then error_tlog" "re.match(r'^\s*\w*\s*(\w+)\s*=\s*(\w+)', snip.buffer[snip.line-1])" be
+snippet acm_if_err_log "if ret != 0 then error_tlog" "re.match(r'^\s*\w*\s*(\w+)\s*=\s*(\w+)', snip.buffer[snip.line-1])" be
 if (`!p snip.rv = snip.context.group(1)` != 0)
 {
 	`!p import re; snip.rv = acm_error_log_func(snip.context.group(2), snip.context.group(1))`
 }
 endsnippet
 
-snippet if_def_ret_log "define ret as function call result and then check error_tlog" b
+snippet acm_if_def_ret_log "define ret as function call result and then check error_tlog" b
 int ret = ${1:func}(${2:args});
 if (ret != 0)
 {
@@ -676,7 +680,7 @@ if (ret != 0)
 }
 endsnippet
 
-snippet if_invalid_arg "check arguments and return invalid arg" b
+snippet acm_if_invalid_arg "check arguments and return invalid arg" b
 if (${1:name})
 {
 	`!p import re; snip.rv = acm_error_log("invalid args")`
@@ -685,15 +689,15 @@ if (${1:name})
 endsnippet
 
 snippet acm_debug "acm debug log" b
-`!p snip.rv = acm_get_macro_by_buffer("debug")`("${1:fmt}");
+`!p snip.rv = acm_get_macro_by_buffer("debug")`("${1:fmt}", ${2:args});
 endsnippet
 
 snippet acm_error "acm error log" b
-`!p snip.rv = acm_get_macro_by_buffer("error_msg")`("${1:fmt}");
+`!p snip.rv = acm_get_macro_by_buffer("error_msg")`("${1:fmt}", ${2:args});
 endsnippet
 
 snippet acm_infor "acm infor log" b
-`!p snip.rv = acm_get_macro_by_buffer("infor")`("${1:fmt}");
+`!p snip.rv = acm_get_macro_by_buffer("infor")`("${1:fmt}", ${2:args});
 endsnippet
 
 snippet cls_noncopyable_def "a noncopyable class definition" b
@@ -738,7 +742,7 @@ snippet ifn0 "if not equal 0" b
 	}
 endsnippet
 
-snippet end_triple
+snippet container_end_triple
 	${1:name} == ${2:container}.end() ? {$2:valid-expr} : ${3:end-expr};
 endsnippet
 
