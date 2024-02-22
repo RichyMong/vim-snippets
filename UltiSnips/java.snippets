@@ -32,6 +32,18 @@ def mixedCase(word):
 	if not word: return ''
 	return word[0].lower() + word[1:]
 
+def wea_logger_name():
+	import re
+	import os
+	if os.path.isfile(path):
+		pattern = re.compile(r'final\s+Logger\s+(\w+)\s*=\s*LogManager.getLogger')
+		with open(path) as f:
+			for line in f:
+				m = pattern.search(line)
+				if m:
+					return m.group(1)
+	return "LOGGER"
+
 endglobal
 
 snippet sleep "try sleep catch" b
@@ -514,6 +526,15 @@ snip.rv = snip.basename or "untitled"`} ${2:extends ${3:Parent} }${4:implements 
 	}
 }
 endsnippet
+
+snippet "wea_log_(debug|error|info)" "log use the class logger" br
+`!p snip.rv = wea_logger_name()`.`!p snip.rv = match.group(1)`("$1", $2);
+endsnippet
+
+snippet wea_mylog_info "my info log use the class logger" b
+LOGGER.info("[ououmania] $1", $2);
+endsnippet
+
 # end added by ououmania
 
 # vim:ft=snippets:
