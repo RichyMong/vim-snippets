@@ -20,6 +20,11 @@ def getShell():
 					return "sh"
 				return shell
 	return "sh"
+
+def export_uppercase(line):
+	import re
+	return re.sub(r"(\S+)(?<==)", lambda x: x[1].upper().replace("-", "_"), line)
+
 endglobal
 
 ###########################################################################
@@ -105,31 +110,82 @@ endsnippet
 
 #################### ououmaia starts ####################
 
-snippet /if[_-]else/ "if ... then ... else" br
-if [[ ${1:condition} ]]; then
-	${0}
-else
-	${2}
+snippet alias "define an alias" b
+alias ${1:aname}="${2:operation}"
+endsnippet
+
+snippet declare-array "declare an array" b
+declare -a ${1:array}=()
+endsnippet
+
+snippet declare-dict "declare an associative array" b
+declare -A ${1:dict}=()
+endsnippet
+
+# The cursor must also be set if the line is set.
+post_jump "snip.buffer[snip.line] = export_uppercase(snip.buffer[snip.line]); snip.cursor.preserve()"
+snippet export "export a variable" b
+export ${1:var-name}=${2}
+endsnippet
+
+snippet func-getopt "getopt and eval args" b
+	local -r args=$(getopt -o h${1:<short-options>} -l help,${2:<long-options>} -- "$@")
+
+	# Set the positional parameters to the expansion of x, even if x expands
+	# with a leading '−' or '+'
+	eval set -- "$args"
+endsnippet
+
+snippet /func[_-]?usage([_-]?err)?(or)?/ "echo function usage" br
+echo "usage: ${FUNCNAME[0]} ${1:<args>}"
+return `!p snip.rv = 1 if match.group(1) else 0`
+endsnippet
+
+snippet if-help-func "if functon $1 is help" b
+if [[ \$1 = "-h" ]] || [[ \$1 = "--help" ]]; then
+	echo "${FUNCNAME[0]} ${1:<args>} ${2:[options]}"
+	return 0
 fi
 endsnippet
 
-snippet /if[_-]which/ "if which xxx then" br
+snippet if-help-script "if script $1 is help" b
+if [[ \$1 = "-h" ]] || [[ \$1 = "--help" ]]; then
+	echo "${BASH_SOURCE[0]} ${1:<args>} ${2:[options]}"
+	exit 0
+fi
+endsnippet
+
+snippet /if[_-]?else/ "if ... then ... else" br
+if [[ ${1:condition} ]]; then
+	${2}
+else
+	${0}
+fi
+endsnippet
+
+snippet /if[_-]?which/ "if which xxx then" br
 if which ${1:cmd} &>/dev/null; then
 	${0:${VISUAL}}
 fi
 endsnippet
 
-snippet /if_argc_(g[te]|l[te]|eq|ne)/ "check $# with expected number" br
-if [[ $# -`!p snip.rv = match.group(1)` ${2:number} ]]; then
+snippet /if[_-]?argc[_-]?(g[te]|l[te]|eq|ne)/ "check $# with expected number" br
+if [[ $# -`!p snip.rv = match.group(1)` ${1:number} ]]; then
 	${0:${VISUAL}}
 fi
 endsnippet
 
-snippet path_stem "substitute to get filename" b
+snippet local-var "define a local variable" b
+local ${1:var}
+$1=
+endsnippet
+
+# "i" enables in-word expansion
+snippet path_stem "substitute to get filename" i
 ${path##*/}
 endsnippet
 
-snippet path_dir "substitute to get diretory" b
+snippet path_dir "substitute to get diretory" i
 ${path%/*}
 endsnippet
 
