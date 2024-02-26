@@ -779,7 +779,24 @@ snippet pmdoc "pocoo style module doc string" b
 $0
 endsnippet
 
-# Here start ououmnia's snippets.
+# Here start ououmnia's snippets. Sort the snippets by names.
+
+snippet class_init "__init__ function of class" b
+	def __init__(self, ${1:named_arg}, *args, **kwargs):
+		${2}
+endsnippet
+
+snippet /dict[-_]?get/ "dict get with default" br
+${1:x}:{$2:type} = ${3:dict}.get(${4:key}, ${5:None})
+if not ${1}:
+	${5:${VISUAL:pass}}
+endsnippet
+
+snippet exception "custom Exception" b
+class ${1:CustomError}(RuntimeError):
+	pass
+endsnippet
+
 snippet from_any "import type hint Any" b
 from typing import Any
 endsnippet
@@ -789,18 +806,11 @@ from typing import List
 endsnippet
 
 snippet from_iterable "import type hint Iterable" b
-from collections.abc import Iterable
+from typing import Iterable
 endsnippet
 
-snippet exception "custom Exception" b
-class ${1:CustomError}(RuntimeError):
-	pass
-endsnippet
-
-snippet dict_get "dict get with default" b
-${1:x} = ${2:dict}.get(${3:key}, ${4:None})
-if not ${1}:
-	${5:${VISUAL:pass}}
+snippet script_dir "define the current SCRIPT_DIR" b
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 endsnippet
 
 snippet withf "with open file" b
@@ -809,9 +819,6 @@ with open(${1:path}) as f:
 $0
 endsnippet
 
-snippet script_dir "define the current SCRIPT_DIR"
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-endsnippet
 # Here end ououmnia's snippets.
 
 # vim:ft=snippets:

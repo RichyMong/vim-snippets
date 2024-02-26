@@ -32,17 +32,63 @@ def mixedCase(word):
 	if not word: return ''
 	return word[0].lower() + word[1:]
 
-def wea_logger_name():
+# ououmania
+def guess_package_by_file(file=""):
+	import os
+	abs_path = os.path.realpath(file or path)
+	package = os.path.dirname(abs_path)
+	pattern = "src/main/java/"
+	index = package.find(pattern)
+	if index >= 0:
+		package = package[index+len(pattern):]
+	return ".".join(x for x in package.split(os.path.sep) if x)
+
+def upper_final_var(line, expected_tabstop=1):
+	import re
+	if snip.tabstop != expected_tabstop:
+		return line
+	# We must use non-greedy here. look-behind not works since the pattern is
+	# not fixed width.
+	return re.sub(r"(\S+)(?=\s*=)", lambda x: x[1].upper().replace("-", "_"), line)
+
+def wea_current_logger():
 	import re
 	import os
 	if os.path.isfile(path):
-		pattern = re.compile(r'final\s+Logger\s+(\w+)\s*=\s*LogManager.getLogger')
+		# The current logger defined by the class name or empty logger. But it
+		# fails for inner classes
+		pattern = re.compile(fr'final\s+Logger\s+(\w+)\s*=\s*LogManager.getLogger\s*\(\s*({snip.basename}\.class)?\s*\)')
 		with open(path) as f:
 			for line in f:
 				m = pattern.search(line)
 				if m:
 					return m.group(1)
 	return "LOGGER"
+
+def wea_proptype(type_name):
+	lower_name = type_name.lower()
+	if lower_name.startswith("bool"):
+		return "boolean"
+	if lower_name in ("double", "float", "int", "long"):
+		return lower_name
+
+	if lower_name in ("string",):
+		return lower_name.capitalize()
+	return type_name
+
+def wea_proptype_default(type_name):
+	lower_name = type_name.lower()
+	if lower_name.startswith("bool"):
+		return "false"
+	if lower_name in ("int", "long"):
+		return "0"
+
+	if lower_name in ("double", "float"):
+		return ".0"
+
+	if lower_name in ("string",):
+		return ""
+	return "null"
 
 endglobal
 
@@ -444,64 +490,33 @@ while ($1)`!p nl(snip)`{
 }
 endsnippet
 
-# added by ououmania
-snippet if_null "if null" b
-if (${0:var} == null) {
-	$1
+# added by ououmania - sorted by snippet names
+
+snippet /contains([kK]ey)?/ "check contains(Key)" br
+if (${1:collection}.contains`!p snip.rv = "Key" if match.group(1) else ""`($2)) {
+	${0:${VISUAL}}
 }
 endsnippet
 
-snippet if_null_else "if null then else" b
-if (${0:var} == null) {
-	$1
-} else {
-	$2
-}
+post_jump "snip.buffer[snip.line] = upper_final_var(snip.buffer[snip.line], 4); snip.cursor.preserve()"
+snippet ff "define final field(uppercase, '-' replaced by '_')" b
+${1|private,public,protected|} ${5:static} final ${2:String} ${3:`!p snip.rv = t[2].upper()`} = ${4:value};
 endsnippet
 
-snippet if_not_null "if null" b
-if (${0:var} != null) {
-	$1
-}
+snippet /if[-_]?(not)?[-_]?null[-_]?(else)?/ "if null/not-null optional else" br
+if (${1:var} `!p snip.rv = "!=" if match.group(1) else "=="` null) {
+	${0:${VISUAL}}
+}`!p snip.rv = " else {\n}" if match.group(2) else ""`
 endsnippet
 
-snippet if_not_null_else "if not null then else" b
-if (${0:var} != null) {
-	$1
-} else {
-	$2
-}
+snippet /if[-_]?(not)?[-_]?(?:0|zero)[-_]?(else)?/ "if zero/non-zero optional else" br
+if (${1:var} `!p snip.rv = "!=" if match.group(1) else "=="` 0) {
+	${0:${VISUAL}}
+}`!p snip.rv = " else {\n}" if match.group(2) else ""`
 endsnippet
 
-snippet if_zero "if zero" b
-if ($0 == 0) {
-	$1
-}
-endsnippet
-
-snippet if_zero_else "if zero then else" b
-if (${0:var} == 0) {
-	$1
-} else {
-	$2
-}
-endsnippet
-
-snippet if_not_zero "if zero" b
-if (${0:var} != 0) {
-	$1
-}
-endsnippet
-
-snippet if_not_zero_else "if not zero then else" b
-if (${0:var} != 0) {
-	$1
-} else {
-	$2
-}
-endsnippet
-
-snippet i.j.i "import java.io." i
+# auto-import works most of the time.
+snippet i.j.i "import java.io." br
 import java.io.${0:package};
 endsnippet
 
@@ -513,7 +528,47 @@ snippet i.j.u "import java.util."  i
 import java.util.${0:stream}
 endsnippet
 
-snippet cls_singleton "define a singleton class with an instance holder" b
+snippet debug-enabled "if debug enabled" b
+if (`!p snip.rv = wea_current_logger()`.isDebugEnabled()) {
+	`!p snip.rv = snip.v.text if snip.v.text else wea_current_logger() + '.debug("");'`
+}
+endsnippet
+
+snippet log4j-import "import log4j LogManager" b
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+endsnippet
+
+snippet log4j-logger "define a log4j logger" b
+private static Logger logger = LogManager.getLogger(`!p snip.rv = snip.basename`.class);
+endsnippet
+
+snippet map-new-concurrent "new ConcurrentMap" b
+ConcurrentMap<${1:K}, ${2:V}> ${3:map} = new ConcurrentHashMap<>();
+endsnippet
+
+snippet new "new object" b
+${1:Object} ${2:obj} = new $1($3);
+endsnippet
+
+snippet package "guess the current package" b
+package `!p snip.rv = guess_package_by_file()`;
+endsnippet
+
+snippet /(protobuf|pb)-import "import protobuf message" b
+import com.google.protobuf.Message;
+endsnippet
+
+snippet sb "string builder" b
+StringBuilder ${1:sb} = new StringBuilder($2);
+endsnippet
+
+snippet sf "string format" b
+String.format("${1:fmt}", ${2:args});
+endsnippet
+
+# snip.basename: The current filename with the extension removed.
+snippet singleton "define a singleton class with an instance holder" b
 public class ${1:`!p
 snip.rv = snip.basename or "untitled"`} ${2:extends ${3:Parent} }${4:implements ${5:Interface} }{
 	$0
@@ -527,12 +582,53 @@ snip.rv = snip.basename or "untitled"`} ${2:extends ${3:Parent} }${4:implements 
 }
 endsnippet
 
-snippet "wea_log_(debug|error|info)" "log use the class logger" br
-`!p snip.rv = wea_logger_name()`.`!p snip.rv = match.group(1)`("$1", $2);
+snippet try-with "try clause with resource" b
+try(${1:var} = ${2:expression}) {
+	${3}
+}
 endsnippet
 
-snippet wea_mylog_info "my info log use the class logger" b
-LOGGER.info("[ououmania] $1", $2);
+snippet /wea[-_]?(debug|error|info|warn)/ "log use the class logger" br
+`!p snip.rv = wea_current_logger()`.`!p snip.rv = match.group(1)`("$1", $2);
+endsnippet
+
+snippet /wea[-_]?my(debug|error|info|warn)/ "ououmania log use the class logger" br
+`!p snip.rv = wea_current_logger()`.`!p snip.rv = match.group(1)`("[ououmania] $1", $2);
+endsnippet
+
+snippet /wea[-_]?(real)?prop[-_]?(\w+)/ "wea property reader" br
+`!p snip.rv = wea_proptype(match.group(2))` ${1:var} = PropertyFileReader.get`!p snip.rv = ("RealTime" if match.group(1) else "") + camel(wea_proptype(match.group(2)))`Item("${2:name}", ${3:`!p snip.rv = wea_proptype_default(match.group(2))`});
+endsnippet
+
+snippet wea-millis "currentTimeMillis" w
+Framework.currentTimeMillis()
+endsnippet
+
+snippet wea-rpc "define rpc req and make the call" b
+Ss${1:Gamesvr}.Rpc${2}Req.Builder rpc$2Req = Ss$1.Rpc$2Req.newBuilder();
+try {
+	RpcResult<Ss$1.Rpc$2Res.Builder> rpcResult = `!p snip.rv = t[1].removesuffix('svr')`Service.get()
+		.rpc$2(rpc$2Req);
+	if (rpcResult.isOK()) {
+		${3}
+	}
+} catch (RpcException | NKTimeoutException e) {
+	`!p snip.rv = wea_current_logger()`.error("$2 failed, e:{}", e);
+}
+endsnippet
+
+snippet wea-runjob "run job" b
+	try {
+		CurrentExecutorUtil.runJob(() -> {
+			${1}
+		}, ${2:"jobname"}, ${3|false,true|});
+	} catch (NKCheckedException e) {
+		${4}
+	}
+endsnippet
+
+snippet wea-throw "NKErrorCode throwError" b
+NKErrorCode.${1:UnknownError}.throwError("$2");
 endsnippet
 
 # end added by ououmania
