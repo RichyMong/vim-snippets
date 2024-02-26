@@ -414,13 +414,13 @@ for (auto ${1:it} = ${2:container}.begin(); $1 != $2.end(); ) {
 }
 endsnippet
 
-snippet /for[-_]?(c?)ar "for range loop auto reference" br
+snippet /for[-_]?(c?)ar/ "for range loop auto reference" br
 for (`!p snip.rv = "const " if match.group(1) else ""`auto &${1:x} : ${2}) {
 	${3}
 }
 endsnippet
 
-snippet /for[-_]?(c?)av "for range loop auto value" br
+snippet /for[-_]?(c?)av/ "for range loop auto value" br
 for (`!p snip.rv = "const " if match.group(1) else ""`auto ${1:x} : ${2}) {
 	${3}
 }

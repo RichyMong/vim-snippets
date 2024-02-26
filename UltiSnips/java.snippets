@@ -43,6 +43,15 @@ def guess_package_by_file(file=""):
 		package = package[index+len(pattern):]
 	return ".".join(x for x in package.split(os.path.sep) if x)
 
+def get_boxtype(base_type: str) -> str:
+	if base_type == "int":
+		return "Integer"
+	if base_type == "char":
+		return "Character"
+	if base_type in ("boolean", "byte", "float", "long", "short", "double"):
+		return base_type.capitalize()
+	return base_type
+
 def upper_final_var(line, expected_tabstop=1):
 	import re
 	if snip.tabstop != expected_tabstop:
@@ -492,6 +501,10 @@ endsnippet
 
 # added by ououmania - sorted by snippet names
 
+snippet array "define a new array" b
+T[] ${1:array} = new T[${2}]${3:`!p snip.rv = " {}" if not t[2] else ""`};
+endsnippet
+
 snippet /contains([kK]ey)?/ "check contains(Key)" br
 if (${1:collection}.contains`!p snip.rv = "Key" if match.group(1) else ""`($2)) {
 	${0:${VISUAL}}
@@ -553,6 +566,14 @@ endsnippet
 
 snippet package "guess the current package" b
 package `!p snip.rv = guess_package_by_file()`;
+endsnippet
+
+snippet /parse(\w+)/ "boxtype parse" ir
+`!p snip.rv = get_boxtype(match.group(1)) + ".parse" + match.group(1).capitalize() + "()"`
+endsnippet
+
+snippet /parse(\w+)[-_]def/ "boxtype parse" ir
+`!p snip.rv = match.group(1).lower()` ${1:var} = `!p snip.rv = get_boxtype(match.group(1)) + ".parse" + match.group(1).capitalize() + "()"`;
 endsnippet
 
 snippet /(protobuf|pb)-import "import protobuf message" b
