@@ -781,6 +781,10 @@ endsnippet
 
 # Here start ououmnia's snippets. Sort the snippets by names.
 
+snippet cast "cast a variable to a type" i
+${1:typing}.cast(${2}, ${3:${VISUAL}})
+endsnippet
+
 snippet class_init "__init__ function of class" b
 	def __init__(self, ${1:named_arg}, *args, **kwargs):
 		${2}

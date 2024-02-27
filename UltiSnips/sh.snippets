@@ -141,21 +141,7 @@ echo "usage: ${FUNCNAME[0]} ${1:<args>}"
 return `!p snip.rv = 1 if match.group(1) else 0`
 endsnippet
 
-snippet if-help-func "if functon $1 is help" b
-if [[ \$1 = "-h" ]] || [[ \$1 = "--help" ]]; then
-	echo "${FUNCNAME[0]} ${1:<args>} ${2:[options]}"
-	return 0
-fi
-endsnippet
-
-snippet if-help-script "if script $1 is help" b
-if [[ \$1 = "-h" ]] || [[ \$1 = "--help" ]]; then
-	echo "${BASH_SOURCE[0]} ${1:<args>} ${2:[options]}"
-	exit 0
-fi
-endsnippet
-
-snippet /if[_-]?else/ "if ... then ... else" br
+snippet if_else "if ... then ... else" b
 if [[ ${1:condition} ]]; then
 	${0:${VISUAL}}
 else
@@ -163,30 +149,44 @@ else
 fi
 endsnippet
 
-snippet /if[_-]?which/ "if which xxx then" br
+snippet if_help_func "if functon $1 is help" b
+if [[ \$1 = "-h" ]] || [[ \$1 = "--help" ]]; then
+	echo "${FUNCNAME[0]} ${1:<args>} ${2:[options]}"
+	return 0
+fi
+endsnippet
+
+snippet if_help_script "if script $1 is help" b
+if [[ \$1 = "-h" ]] || [[ \$1 = "--help" ]]; then
+	echo "${BASH_SOURCE[0]} ${1:<args>} ${2:[options]}"
+	exit 0
+fi
+endsnippet
+
+snippet if_which "if which xxx then" b
 if which ${1:cmd} &>/dev/null; then
 	${0:${VISUAL}}
 fi
 endsnippet
 
-snippet /if[_-]?argc[_-]?(g[te]|l[te]|eq|ne)/ "check $# with expected number" br
-if [[ $# -`!p snip.rv = match.group(1)` ${1:number} ]]; then
+snippet /if[_-]?(g[te]|l[te]|eq|ne)/ "check $# with expected number" br
+if [[ ${1:$#} -`!p snip.rv = match.group(1)` ${2:number} ]]; then
 	${0:${VISUAL}}
 fi
 endsnippet
 
 snippet local-var "define a local variable" b
 local ${1:var}
-$1=
+$1=${2}
 endsnippet
 
 # "i" enables in-word expansion
-snippet path_stem "substitute to get filename" i
-${path##*/}
+snippet path_dir "substitute to get diretory" i
+${${1:path}%/*}
 endsnippet
 
-snippet path_dir "substitute to get diretory" i
-${path%/*}
+snippet path_stem "substitute to get filename" i
+${${1:path}##*/}
 endsnippet
 
 snippet mapfile "mapfile from a command's output" b
@@ -200,7 +200,7 @@ done < <(${2:cmd})
 endsnippet
 
 snippet sdir-symlink "script dir following symlink" b
-	SCRIPT_DIR="\$(dirname \$(readlink -f "\$0"))"
+SCRIPT_DIR="\$(dirname \$(readlink -f "\$0"))"
 endsnippet
 
 #################### ououmaia ends ####################
