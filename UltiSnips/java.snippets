@@ -33,6 +33,22 @@ def mixedCase(word):
 	return word[0].lower() + word[1:]
 
 # ououmania
+def find_method_args():
+	"""
+	find the method folling this line
+	"""
+	import re
+	import vim
+	mp = re.compile(r"^\s+(?:public|private)?\s*(?:[\w><.@]+)\s*\S*\w+\(([^()]*)\)")
+	lineno = vim.current.window.cursor[0]
+	for index, line in enumerate(vim.current.buffer[lineno:]):
+		mm = mp.search(line)
+		if not mm:
+			continue
+		word = re.compile(r'[a-zA-Z0-9><.]+\s+\w+')
+		return [i.split(" ") for i in word.findall(mm.group(1))]
+	return []
+
 def guess_package_by_file(file=""):
 	import os
 	abs_path = os.path.realpath(file or path)
@@ -63,15 +79,15 @@ def upper_final_var(line, expected_tabstop=1):
 def wea_current_logger():
 	import re
 	import os
-	if os.path.isfile(path):
+	buffer = vim.current.window.buffer
+	if buffer:
 		# The current logger defined by the class name or empty logger. But it
 		# fails for inner classes
 		pattern = re.compile(fr'final\s+Logger\s+(\w+)\s*=\s*LogManager.getLogger\s*\(\s*({snip.basename}\.class)?\s*\)')
-		with open(path) as f:
-			for line in f:
-				m = pattern.search(line)
-				if m:
-					return m.group(1)
+		for line in buffer:
+			m = pattern.search(line)
+			if m:
+				return m.group(1)
 	return "LOGGER"
 
 def wea_proptype(type_name):
@@ -377,13 +393,13 @@ try {
 endsnippet
 
 snippet mt "method throws" b
-${1:private} ${2:void} ${3:method}($4) ${5:throws $6 }{
+${1|private,public|} ${2:void} ${3:method}($4) ${5:throws $6 }{
 	$0
 }
 endsnippet
 
 snippet m  "method" b
-${1:private} ${2:void} ${3:method}($4) {
+${1|private,public|} ${2:void} ${3:method}($4) {
 	$0
 }
 endsnippet
@@ -505,6 +521,13 @@ snippet array "define a new array" b
 T[] ${1:array} = new T[${2}]${3:`!p snip.rv = " {}" if not t[2] else ""`};
 endsnippet
 
+snippet author "author and date" b
+/**
+ * @author: `echo $USER`
+ * @date: `date "+%Y/%m%d"`
+ */
+endsnippet
+
 snippet /contains([kK]ey)?/ "check contains(Key)" br
 if (${1:collection}.contains`!p snip.rv = "Key" if match.group(1) else ""`($2)) {
 	${0:${VISUAL}}
@@ -547,6 +570,18 @@ if (`!p snip.rv = wea_current_logger()`.isDebugEnabled()) {
 }
 endsnippet
 
+snippet class-file "new file and class" b
+package `!p snip.rv = guess_package_by_file()`;
+
+/**
+ * @author: `echo $USER`
+ * @date: `date "+%Y/%m%d"`
+ */
+${1:public} class `!p snip.rv = snip.basename` {
+	$0
+}
+endsnippet
+
 snippet log4j-import "import log4j LogManager" b
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -558,6 +593,14 @@ endsnippet
 
 snippet map-new-concurrent "new ConcurrentMap" b
 ConcurrentMap<${1:K}, ${2:V}> ${3:map} = new ConcurrentHashMap<>();
+endsnippet
+
+snippet doc-method "document an existing method" b
+/**
+ * ${7:Short Description}`!p
+for i in find_method_args():
+	snip.rv += "\n\t * @param " + i[1] + " "`
+ **/
 endsnippet
 
 snippet new "new object" b
@@ -619,6 +662,12 @@ endsnippet
 
 snippet /wea[-_]?(real)?prop[-_]?(\w+)/ "wea property reader" br
 `!p snip.rv = wea_proptype(match.group(2))` ${1:var} = PropertyFileReader.get`!p snip.rv = ("RealTime" if match.group(1) else "") + camel(wea_proptype(match.group(2)))`Item("${2:name}", ${3:`!p snip.rv = wea_proptype_default(match.group(2))`});
+endsnippet
+
+snippet /wea[-_]?check[-_]?real[-_]?(prop[-_])?(\w+)/ "wea property reader" br
+if (PropertyFileReader.getRealTime`!p snip.rv = camel(wea_proptype(match.group(2)))`Item("${2:name}", ${3:`!p snip.rv = wea_proptype_default(match.group(2))`}) != $3) {
+	${0:${VISUAL}}
+}
 endsnippet
 
 snippet wea-millis "currentTimeMillis" w

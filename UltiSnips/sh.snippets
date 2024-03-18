@@ -141,6 +141,13 @@ echo "usage: ${FUNCNAME[0]} ${1:<args>}"
 return `!p snip.rv = 1 if match.group(1) else 0`
 endsnippet
 
+snippet if_argc_error "error if argc doesn't meet the condition" b
+if [[ $# -${1:lt} ${2:number} ]]; then
+	echo "Usage: ${FUNCNAME[0]} ${1:<args>} ${2:[options]}"
+	return 1
+fi
+endsnippet
+
 snippet if_else "if ... then ... else" b
 if [[ ${1:condition} ]]; then
 	${0:${VISUAL}}
@@ -151,14 +158,14 @@ endsnippet
 
 snippet if_help_func "if functon $1 is help" b
 if [[ \$1 = "-h" ]] || [[ \$1 = "--help" ]]; then
-	echo "${FUNCNAME[0]} ${1:<args>} ${2:[options]}"
+	echo "Usage: ${FUNCNAME[0]} ${1:<args>} ${2:[options]}"
 	return 0
 fi
 endsnippet
 
 snippet if_help_script "if script $1 is help" b
 if [[ \$1 = "-h" ]] || [[ \$1 = "--help" ]]; then
-	echo "${BASH_SOURCE[0]} ${1:<args>} ${2:[options]}"
+	echo "Usage: ${BASH_SOURCE[0]} ${1:<args>} ${2:[options]}"
 	exit 0
 fi
 endsnippet
