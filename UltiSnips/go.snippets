@@ -2,6 +2,14 @@
 
 priority -50
 
+global !p
+def package_suffix():
+	if path.endswith("_test.go"):
+		return "_test"
+	else:
+		return ""
+endglobal
+
 # when to abbriviate and when not?
 # b doesn't work here, because it ignores whitespace
 # optional local name?
@@ -83,7 +91,7 @@ func ${1:handler}(${2:w} http.ResponseWriter, ${3:r} *http.Request) {
 endsnippet
 
 # types and variables
-snippet map "Map type" b
+snippet map "Map type"
 map[${1:keytype}]${2:valtype}
 endsnippet
 
@@ -115,10 +123,107 @@ if err != nil {
 endsnippet
 
 # Here start ououmnia's snippets.
-snippet yaml "yaml field"
+snippet append_assign "append and assign to a slice" b
+$1 = append(${1:slice}, ${2:element})
+endsnippet
+
+snippet for_elem "for range element or value only" b
+for _, ${1:elem} := range ${2:slice} {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet for_index "for range index or key only" b
+for ${1:index} := range ${2:slice} {
+	${3}
+}
+endsnippet
+
+snippet if_error_check "if define error and check" b
+if ${1:err} := ${2}; ${1} != nil {
+	${3:return err}
+}
+endsnippet
+
+snippet if_error_panic "if error, panic" b
+if ${1:err} != nil {
+	panic($1)
+}
+endsnippet
+
+snippet if_error_return "if error, return it" b
+if ${1:err} != nil {
+	return $1
+}
+endsnippet
+
+snippet if_error_ignore_value "ignore the value, and check error" b
+if _, ${1:err} := ${2}; err != nil {
+	return $1
+}
+endsnippet
+
+snippet if_map_contains_inline "inline check if map contains a key" b
+if ${1:value}, ${2:exists} := ${3:map}[${4:key}]; $2 {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet if_map_contains "if map contains a key" b
+${1:value}, ${2:exists} := ${3:map}[${4:key}]
+if $2 {
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet if_nil_error "if nil return error" b
+if ${1:value} == nil {
+	return ${2:fmt.Errorf}
+}
+endsnippet
+
+snippet make_mape "define a map with make" b
+${1:m} := make(map[${2:K}]${3:V})
+endsnippet
+
+snippet map_access "check map with key" b
+${1:value}, ${2:exists} := ${3:map}[${4:key}]
+endsnippet
+
+snippet map_literal "define a map literal"
+map[${1:keytype}]${2:valuetype} {
+	${3:key}:${4:value},
+}
+endsnippet
+
+snippet pkg "declare a package"
+package ${1:name}`!p snip.rv = package_suffix()`
+endsnippet
+
+snippet xml "xml tag"
+\`xml:"${1:displayName}"\`
+endsnippet
+
+snippet xml_marshaler "implement Marshaler interface" b
+func (${1:obj} ${2:type}) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	var s string
+	return e.EncodeElement(s, start)
+}
+endsnippet
+
+snippet xml_unmarshaler "implement Unmarshaler interface" b
+func (${1:obj} ${2:type}) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var s string
+	if err := d.DecodeElement(&s, &start); err != nil {
+		return err
+	}
+	return nil
+}
+endsnippet
+
+snippet yaml "yaml tag"
 \`yaml:"${1:displayName}"\`
 endsnippet
 
-snippet xml "xml field"
-\`xml:"${1:displayName}"\`
-endsnippet
+# Here ends ououmnia's snippets.
+
