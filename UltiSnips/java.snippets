@@ -101,6 +101,12 @@ def wea_proptype(type_name):
 		return lower_name.capitalize()
 	return type_name
 
+def wea_propfunc_name(type_name):
+	type_prefix = camel(wea_proptype(type_name))
+	if type_prefix != "String":
+		return f"{type_prefix}Item"
+	return "Item"
+
 def wea_proptype_default(type_name):
 	lower_name = type_name.lower()
 	if lower_name.startswith("bool"):
@@ -653,19 +659,19 @@ try(${1:var} = ${2:expression}) {
 endsnippet
 
 snippet /wea[-_]?(debug|error|info|warn)/ "log use the class logger" br
-`!p snip.rv = wea_current_logger()`.`!p snip.rv = match.group(1)`("$1", $2);
+`!p snip.rv = wea_current_logger()`.`!p snip.rv = match.group(1)`("${1}", ${2});
 endsnippet
 
 snippet /wea[-_]?my(debug|error|info|warn)/ "ououmania log use the class logger" br
-`!p snip.rv = wea_current_logger()`.`!p snip.rv = match.group(1)`("[ououmania] $1", $2);
+`!p snip.rv = wea_current_logger()`.`!p snip.rv = match.group(1)`("[ououmania] ${1}", ${2});
 endsnippet
 
 snippet /wea[-_]?(real)?prop[-_]?(\w+)/ "wea property reader" br
-`!p snip.rv = wea_proptype(match.group(2))` ${1:var} = PropertyFileReader.get`!p snip.rv = ("RealTime" if match.group(1) else "") + camel(wea_proptype(match.group(2)))`Item("${2:name}", ${3:`!p snip.rv = wea_proptype_default(match.group(2))`});
+`!p snip.rv = wea_proptype(match.group(2))` ${1:var} = PropertyFileReader.get`!p snip.rv = ("RealTime" if match.group(1) else "") + wea_propfunc_name(match.group(2))`("${2:name}", ${3:`!p snip.rv = wea_proptype_default(match.group(2))`});
 endsnippet
 
-snippet /wea[-_]?check[-_]?real[-_]?(prop[-_])?(\w+)/ "wea property reader" br
-if (PropertyFileReader.getRealTime`!p snip.rv = camel(wea_proptype(match.group(2)))`Item("${2:name}", ${3:`!p snip.rv = wea_proptype_default(match.group(2))`}) != $3) {
+snippet /wea[-_]?check[-_]?(real[-_]?)?(prop[-_])?(\w+)/ "wea property reader" br
+if (PropertyFileReader.get`!p snip.rv = ("RealTime" if match.group(1) else "") + wea_propfunc_name(match.group(3))`Item("${2:name}", ${3:`!p snip.rv = wea_proptype_default(match.group(3))`}) != $3) {
 	${0:${VISUAL}}
 }
 endsnippet
