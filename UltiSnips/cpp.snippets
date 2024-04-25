@@ -498,6 +498,10 @@ ${1:T} ${2:name}() const { return $2_; }
 void set_$2($1 v) { $2_ = v; }
 endsnippet
 
+snippet lambda "insert a lambda expression" w
+[](${1:param}){${2:statement};}
+endsnippet
+	
 snippet memrs "class member reference setter" b
 void set_${1:name}(const ${2:type} &v) { $1_ = v; }
 endsnippet
@@ -511,13 +515,13 @@ const ${1:T}& ${2:name}() const { return $2_; }
 void set_$1(const $2 &v) { $1_ = v; }
 endsnippet
 
+snippet memrgcd "member const reference getter declare" b
+const ${1:T} ${2:name}() const;
+endsnippet
+
 snippet memrgcm "class member const and non-const reference getter" b
 ${1:type}& ${2:name}() { return $2_; }
 const ${1:type}& ${2:name}() const { return $2_; }
-endsnippet
-
-snippet constrg "member const reference getter declare" b
-const ${1:T} ${2:name}() const;
 endsnippet
 
 snippet mutablerg "member non-const reference getter" b

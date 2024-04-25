@@ -143,7 +143,7 @@ endsnippet
 
 snippet if_argc_error "error if argc doesn't meet the condition" b
 if [[ $# -${1:lt} ${2:number} ]]; then
-	echo "Usage: ${FUNCNAME[0]} ${1:<args>} ${2:[options]}"
+	echo "Usage: ${FUNCNAME[0]} ${3:<args>} ${4:[options]}"
 	return 1
 fi
 endsnippet

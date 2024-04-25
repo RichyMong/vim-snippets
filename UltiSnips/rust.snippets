@@ -51,6 +51,22 @@ impl$4 ${1:Type/Trait}${2: for ${3:Type}}${4:<${5:T}>} {
 endsnippet
 
 # snippets by ououmania
+snippet generic_func "define a generic function" b
+fn ${1:name}<${2:T}>(${3}) ${4} {
+}
+endsnippet
+
+snippet generic_func_where "define a generic function" b
+fn ${1:name}<${2:T}>(${3}) -> ${4}
+	where {
+}
+endsnippet
+
+snippet generic_struct "define a generic struct" b
+struct ${1:name}<${2:T}> {
+}
+endsnippet
+
 snippet implf "Implement trait for struct" b
 impl$3 ${1:Trait} for ${2:Type}${3:<${4:T}>} {
 	${0}
@@ -60,22 +76,6 @@ endsnippet
 snippet implst "Implement struct" b
 impl ${1:} {
 }
-endsnippet
-
-snippet stfn0 "Struct fn with no parameter" b
-fn ${1:function_name}(&self)${2/..*/ -> /}$2 {
-	${VISUAL}$0
-}
-endsnippet
-
-snippet stfnn "Struct fn with at least one parameter" b
-fn ${1:function_name}(&self, $2)${3/..*/ -> /}$3 {
-	${VISUAL}$0
-}
-endsnippet
-
-snippet typedef "Type alias" b
-type ${1:a} = ${2:b};
 endsnippet
 
 snippet lettp "Tuple declaration" b
@@ -96,28 +96,49 @@ let ${0:s} = ${1:Struct} {
 };
 endsnippet
 
-snippet cmfun "Member function of struct" b
+snippet new "new" b
+let mut ${1:s} = ${2:T}::new();
+endsnippet
+
+snippet stmem "Struct member declaration" b
+	${1:name}: ${2:type},
+endsnippet
+
+snippet stmeth "struct method" b
 fn ${1:function_name}(&self$2)${3/..*/ -> /}$3 {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet pcmfun "Member function of struct" b
+snippet stmethp "pub struct method" b
 pub fn ${1:function_name}(&self$2)${3/..*/ -> /}$3 {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet mfun "Mutable member function of struct" b
+snippet stemethm "struct mutable self method" b
 fn ${1:function_name}(&mut self$2)${3/..*/ -> /}$3 {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet pmfun "Mutable member function of struct" b
+snippet stemethmp "pub struct mutable self method" b
 pub fn ${1:function_name}(&mut self$2)${3/..*/ -> /}$3 {
 	${VISUAL}$0
 }
+endsnippet
+
+snippet string_from "string from a literal" b
+let ${1:s} = String::from(${2});
+endsnippet
+
+# useless to have an immutable new
+snippet string_new "string new" b
+let mut ${1:s} = String::new();
+endsnippet
+
+snippet typedef "Type alias" b
+type ${1:a} = ${2:b};
 endsnippet
 
 snippet useas "Use one as another" b
@@ -126,6 +147,14 @@ endsnippet
 
 snippet usestd "Use std" b
 use std::${1};
+endsnippet
+
+snippet vec "define a vector" b
+let ${1:v} = vec![${2}];
+endsnippet
+
+snippet vec_mut "define a mut vector" b
+let mut ${1:v} = vec![${2}];
 endsnippet
 
 # vim:ft=snippets:
