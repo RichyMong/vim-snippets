@@ -63,7 +63,7 @@ def acm_error_log(s: str):
 
 def acm_error_log_func(func_call: str, rcvar: str = 'ret'):
 	import re, vim
-	func_name = re.split("[^\w]", func_call)[-1]
+	func_name = re.split(r"[^\w]", func_call)[-1]
 	# both "path" and "fn" gives relative path
 	log_macro = acm_get_macro_by_buffer("error_code")
 	if log_macro == "error_tlog" or log_macro == "ace_error":
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 endsnippet
 
 snippet forc "general for loop (for)"
-for (${6:auto} ${1:i} = ${2:v.begin()}; `!p import re; snip.rv = re.split("[^\w]",t[1])[-1]` ${4:!=} ${3:`!p m = re.search(r'^(?:(.*)(\.|->)begin\(\)|((?:std|boost)::)?begin\((.*)\))$', t[2]); snip.rv = (((m.group(3) if m.group(3) else "") + "end(" + m.group(4) + ")") if m.group(4) else (m.group(1) + m.group(2) + "end()")) if m else ""`}; ${5:++`!p snip.rv = t[1].split(" ")[-1]`}) {
+for (${6:auto} ${1:i} = ${2:v.begin()}; `!p import re; snip.rv = re.split(r"[^\w]",t[1])[-1]` ${4:!=} ${3:`!p m = re.search(r'^(?:(.*)(\.|->)begin\(\)|((?:std|boost)::)?begin\((.*)\))$', t[2]); snip.rv = (((m.group(3) if m.group(3) else "") + "end(" + m.group(4) + ")") if m.group(4) else (m.group(1) + m.group(2) + "end()")) if m else ""`}; ${5:++`!p snip.rv = t[1].split(" ")[-1]`}) {
 	${VISUAL}$0
 }
 endsnippet
