@@ -96,7 +96,28 @@ let ${0:s} = ${1:Struct} {
 };
 endsnippet
 
-snippet new "new" b
+snippet match_all "match with all" b
+match ${1} {
+	${2} => ${3},
+	_ => ${4},
+}
+endsnippet
+
+snippet match_pattern "match with all" b
+${1} => ${2},
+endsnippet
+
+snippet match_expr "match with an expression" b
+${1} => ${2},
+endsnippet
+
+snippet match_block "match with a block" b
+${1} => {
+	${2}
+}
+endsnippet
+
+snippet new "new of a type" b
 let mut ${1:s} = ${2:T}::new();
 endsnippet
 
@@ -159,6 +180,10 @@ endsnippet
 
 snippet vec_mut "define a mut vector" b
 let mut ${1:v} = vec![${2}];
+endsnippet
+
+snippet vec_push "push to a vector" b
+${1:vec}.push(${2:val});
 endsnippet
 
 # vim:ft=snippets:
