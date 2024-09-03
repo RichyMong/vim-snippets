@@ -114,8 +114,7 @@ private:
 endsnippet
 
 snippet nns "named namespace .. (namespace)"
-namespace ${1:`!p snip.rv = snip.basename or "name"`}
-{
+namespace ${1:`!p snip.rv = snip.basename or "name"`} {
 ${VISUAL}$0
 } // namespace $1
 endsnippet
@@ -155,8 +154,7 @@ snippet cla "An entire .h generator" b
 #ifndef ${2:`!v substitute(vim_snippets#Filename('$1_H','ClassName'),'.*','\U&\E','')`}
 #define $2
 
-class ${1:`!v substitute(substitute(vim_snippets#Filename('$1','ClassName'),'^.','\u&',''), '_\(\w\)', '\u\1', 'g')`}
-{
+class ${1:`!v substitute(substitute(vim_snippets#Filename('$1','ClassName'),'^.','\u&',''), '_\(\w\)', '\u\1', 'g')`} {
 public:
 	$1();
 	virtual ~$1();
@@ -262,7 +260,7 @@ endsnippet
 
 snippet aans "an anonymous namespace" b
 namespace {
-${0}
+${VISUAL}
 } // annoymous namespace
 endsnippet
 
@@ -368,11 +366,11 @@ snippet cst_autov "const auto type value definition" b
 const auto ${1:name} = ${2:expr};
 endsnippet
 
-snippet cst_str_def "const std::string reference" b
+snippet cst_str_def "define a variable of const std::string reference" b
 const std::string &${1:var} = ${2:expr};
 endsnippet
 
-snippet cst_str_ref "const std::string reference"
+snippet cst_str_ref "const std::string reference" w
 const std::string &${1:var}
 endsnippet
 
@@ -386,7 +384,7 @@ enum class ${1:name} : ${2:int} {
 };
 endsnippet
 
-snippet findv "find in std::vector" b
+snippet findv "std::find algorithm" b
 auto it = std::find(${1:vec}.begin(), $1.end(), ${2:var});
 endsnippet
 
@@ -398,6 +396,24 @@ if ($1 `!p snip.rv = "!=" if match.group(1) else "=="` $2.end()) {
 endsnippet
 
 # for (custom)
+snippet for_range_value "value range for loop" b
+for (auto ${1:it}: v){
+	${0}
+}
+endsnippet
+
+snippet for_range_reference "reference range for loop" b
+for (auto &${1:it}: v){
+	${0}
+}
+endsnippet
+
+snippet for_range_const_reference "const reference range for loop" b
+for (const auto &${1:it}: v){
+	${0}
+}
+endsnippet
+
 snippet forait "for auto iterator" b
 for (auto ${1:it} = ${2:container}.begin(); $1 != $2.end(); ++$1) {
 	${0}
@@ -577,9 +593,9 @@ endsnippet
 
 snippet ns_google_pb "google protobuf Message forward declaration" b
 namespace google {
-	namespace protobuf {
-		class Message;
-	} // protobuf
+namespace protobuf {
+	class Message;
+} // protobuf
 } // google
 endsnippet
 
@@ -675,6 +691,82 @@ endsnippet
 
 snippet acm_error "acm error log" b
 `!p snip.rv = acm_get_macro_by_buffer("error_msg")`("${1:fmt}", ${2:args});
+endsnippet
+
+snippet if_cpp_11 "if c++11 is avalialbe" b
+#if __cplusplus >= 201103
+	${0:${VISUAL}}
+#endif
+endsnippet
+
+snippet if_cpp_14 "if c++14 is avalialbe" b
+#if __cplusplus >= 201300
+	${0:${VISUAL}}
+#endif
+endsnippet
+
+snippet if_cpp_17 "if c++17 is avalialbe" b
+#if __cplusplus >= 201703L
+	${0:${VISUAL}}
+#endif
+endsnippet
+
+snippet ngr_copyright "ngr copywright" bw
+/**                                                                                                                                                            * @file `!p snip.rv=snip.fn`
+ * @author richymeng (richymeng@tencent.com)
+ * @brief ${0}
+ * @version 0.1
+ * @date  `!v strftime("%Y-%m-%d %H:%M")`
+ *
+ * @copyright Copyright (c) `!v strftime("%Y")`
+ *
+ */
+endsnippet
+
+snippet /ngr[-_]?(debug|error|info|warn)/ "ngr log" br
+`!p snip.rv = "LOG_" + match.group(1).upper()`("${1:fmt}", ${2:args});
+endsnippet
+
+snippet /ngr[-_]?actor[-_]?(debug|error|info|warn)/ "ngr log" br
+`!p snip.rv = "ACTOR_LOG_" + match.group(1).upper()`(${1:actor}, "${2:fmt}", ${3:args});
+endsnippet
+
+snippet ngr_assert_return "check arguments and return invalid arg" br
+ASSERT_RETURN(${1:expr}, msg::${2:ERROR_PARAM_INVALID});
+endsnippet
+
+snippet ngr_if_actor_log_ret "actor context return if ret != msg::RESULT_SUCCESS" b
+if (ret != msg::RESULT_SUCCESS) {
+	ACTOR_LOG_${1:ERROR}(${2:actor}, "${3:fmt}", ${4:args});
+	return ret;
+}
+endsnippet
+
+snippet ngr_if_def_ret_log "define ret as function call result and then check" b
+int ret = ${1:func}(${2:func_args});
+if (ret != 0) {
+	LOG_${3:ERROR}("$1 failed, ${4:fmt}", ${5:args});
+	return ret;
+}
+endsnippet
+
+snippet ngr_if_log_ret "return if ret != msg::RESULT_SUCCESS" b
+if (ret != msg::RESULT_SUCCESS) {
+	LOG_${1:ERROR}("${2:fmt}", ${3:args});
+	return ret;
+}
+endsnippet
+
+snippet ngr_make_exception_future "make an exception feature" bw
+RpcMakeExceptionFuture<${1:type}>(RpcException("${2:exception}", ${3:value}))
+endsnippet
+
+snippet ngr_make_ready_future "make a value feature" bw
+RpcMakeReadyFuture<${1:type}>(${3:value}))
+endsnippet
+
+snippet ngr_todo "ngr TODO comment" bw
+// TODO(richymeng): $0
 endsnippet
 
 # Here end ououmania's snippets

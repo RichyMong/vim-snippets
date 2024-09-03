@@ -114,6 +114,13 @@ snippet alias "define an alias" b
 alias ${1:aname}="${2:operation}"
 endsnippet
 
+snippet cd_or_return_error "chdir or print an error message and return 1" b
+cd "${1:${dir}}" || {
+	ouou_errormsg "Failed to chdir $1."
+	return 1
+}
+endsnippet
+
 snippet declare-array "declare an array" b
 declare -a ${1:array}=()
 endsnippet
@@ -204,6 +211,10 @@ snippet readcmd "read from a command's output" b
 while read -r ${1:var}; do
 	${0:statement}
 done < <(${2:cmd})
+endsnippet
+
+snippet sc-disable "disable a shellcheck rule" b
+# shellcheck disable=SC${1:2139}
 endsnippet
 
 snippet sdir-symlink "script dir following symlink" b

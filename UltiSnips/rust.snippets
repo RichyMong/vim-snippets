@@ -51,6 +51,10 @@ impl$4 ${1:Type/Trait}${2: for ${3:Type}}${4:<${5:T}>} {
 endsnippet
 
 # snippets by ououmania
+snippet allow-dead-code "add #[allow(dead_code)]" b
+#[allow(dead_code)]
+endsnippet
+
 snippet generic_func "define a generic function" b
 fn ${1:name}<${2:T}>(${3}) ${4} {
 }
@@ -67,14 +71,36 @@ struct ${1:name}<${2:T}> {
 }
 endsnippet
 
-snippet implf "Implement trait for struct" b
-impl$3 ${1:Trait} for ${2:Type}${3:<${4:T}>} {
-	${0}
+snippet implf "impl fmt::Display" b
+impl fmt::Display for ${1:T} {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        fmt::Debug::fmt(self, f)
+    }
 }
 endsnippet
 
 snippet implst "Implement struct" b
 impl ${1:} {
+}
+endsnippet
+
+snippet impl_from "impl From trait for type" b
+impl$4 From<${1:U} for ${3:Type}${4:<${5:T}>} {
+	fn from(value: $1) -> Self {
+	}
+}
+endsnippet
+
+snippet impl_into "impl Into trait for type" b
+impl$4 Into<${1:U} for ${3:Type}${4:<${5:T}>} {
+	fn into(value: $1) -> $1 {
+	}
+}
+endsnippet
+
+snippet impl_trait "impl trait for type" b
+impl$4 ${1:Trait} for ${3:Type}${4:<${5:T}>} {
+	${0}
 }
 endsnippet
 
@@ -113,7 +139,7 @@ ${1} => {
 }
 endsnippet
 
-snippet new "new of a type" b
+snippet new_object "new of a type" b
 let mut ${1:s} = ${2:T}::new();
 endsnippet
 
@@ -149,13 +175,18 @@ pub fn ${1:function_name}(&mut self$2)${3/..*/ -> /}$3 {
 }
 endsnippet
 
-snippet string_from "string from a literal" b
+snippet string_from "string from a literal" w
 let ${1:s} = String::from(${2});
 endsnippet
 
 # useless to have an immutable new
-snippet string_new "string new" b
+snippet string_new "string new" w
 let mut ${1:s} = String::new();
+endsnippet
+
+# define a function of a trait
+snippet trait_fn "add new function to trait" b
+fn ${1:name}(${3}) -> ${4};
 endsnippet
 
 snippet typedef "Type alias" b
