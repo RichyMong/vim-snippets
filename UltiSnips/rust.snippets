@@ -147,30 +147,36 @@ snippet pfd "pub field" b
 pub ${1:name}: ${2:type},
 endsnippet
 
+snippet setter "Struct field setter" b
+fn set_${1:field}(&mut self, $1: ${2:type})i {
+	self.$1 = $1;
+}
+endsnippet
+
 snippet stmem "Struct member declaration" b
 	${1:name}: ${2:type},
 endsnippet
 
-snippet stmeth "struct method" b
-fn ${1:function_name}(&self$2)${3/..*/ -> /}$3 {
+snippet st_fn "struct method" b
+fn ${1:function_name}(&self${2})${3/..*/ -> /}$3 {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet stmethp "pub struct method" b
-pub fn ${1:function_name}(&self$2)${3/..*/ -> /}$3 {
+snippet st_fn_mut "struct mutable self method" b
+fn ${1:function_name}(&mut self${2})${3/..*/ -> /}$3 {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet stemethm "struct mutable self method" b
-fn ${1:function_name}(&mut self$2)${3/..*/ -> /}$3 {
+snippet st_pub_fn "pub struct method" b
+pub fn ${1:function_name}(&self${2})${3/..*/ -> /}$3 {
 	${VISUAL}$0
 }
 endsnippet
 
-snippet stemethmp "pub struct mutable self method" b
-pub fn ${1:function_name}(&mut self$2)${3/..*/ -> /}$3 {
+snippet st_pub_fn_mut "pub struct mutable self method" b
+pub fn ${1:function_name}(&mut self${2})${3/..*/ -> /}$3 {
 	${VISUAL}$0
 }
 endsnippet
@@ -207,6 +213,10 @@ endsnippet
 
 snippet vec_mut "define a mut vector" b
 let mut ${1:v} = vec![${2}];
+endsnippet
+
+snippet vec_new "define a new vector" b
+let mut ${1:v} = Vec::new();
 endsnippet
 
 snippet vec_push "push to a vector" b
