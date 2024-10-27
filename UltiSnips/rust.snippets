@@ -72,9 +72,9 @@ struct ${1:name}<${2:T}> {
 endsnippet
 
 snippet implf "impl fmt::Display" b
-impl fmt::Display for ${1:T} {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        fmt::Debug::fmt(self, f)
+impl std::fmt::Display for ${1:T} {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        std::fmt::Debug::fmt(self, f)
     }
 }
 endsnippet
@@ -102,6 +102,10 @@ snippet impl_trait "impl trait for type" b
 impl$4 ${1:Trait} for ${3:Type}${4:<${5:T}>} {
 	${0}
 }
+endsnippet
+
+snippet lazy_lock "String from" b
+${1:name}: LazyLock<${2:type}> = LazyLock::new(|| ${3:initializer});
 endsnippet
 
 snippet lettp "Tuple declaration" b
@@ -147,6 +151,22 @@ snippet pfd "pub field" b
 pub ${1:name}: ${2:type},
 endsnippet
 
+snippet serde_flatten "serde field attribute" b
+#[serde(flatten)]
+endsnippet
+
+snippet serde_skip_serialize_all_none "serde skip serialize all the none fields" b
+#[serde(skip_serializing_if = "Option::is_none")]
+endsnippet
+
+snippet serde_skip_serialize_none_field "serde skip serialize a none field" b
+#[serde(skip_serializing_if = "Option::is_none")]
+endsnippet
+
+snippet serde_skip_serialize_empty_map "serde skip serialize a empty-map field" b
+#[serde(skip_serializing_if = "Map::is_empty")]
+endsnippet
+
 snippet setter "Struct field setter" b
 fn set_${1:field}(&mut self, $1: ${2:type})i {
 	self.$1 = $1;
@@ -182,7 +202,7 @@ pub fn ${1:function_name}(&mut self${2})${3/..*/ -> /}$3 {
 endsnippet
 
 snippet string_from "string from a literal" w
-let ${1:s} = String::from(${2});
+String::from("${2:hello}")
 endsnippet
 
 # useless to have an immutable new

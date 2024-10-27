@@ -72,6 +72,10 @@ def acm_error_log_func(func_call: str, rcvar: str = 'ret'):
 		log_str = f'{log_macro}({rcvar}, "{func_name} failed");'
 	return log_str
 
+def camel_to_pascal(s: str):
+	if s:
+	    s = s[0].upper() + s[1:]
+	return s
 
 endglobal
 
@@ -245,6 +249,15 @@ BOOST_AUTO_TEST_SUITE_END()
 endsnippet
 
 # Here start ououmania's snippets
+
+# std::cout
+snippet cout "cout a variable" b
+	std::cout << ${1};
+endsnippet
+
+snippet coutl "cout a variable with newline" b
+	std::cout << ${1} << '\n';
+endsnippet
 
 # cpp20 starts
 
@@ -684,7 +697,7 @@ snippet acm_error_resource_not_exist
 const auto *${1:res_ptr} = ResMgrInst.Get${2:ResFunc}(${3:id});
 if ($1 == nullptr)
 {
-	`!p import re; snip.rv = acm_error_log("invalid args")`
+	`!p snip.rv = acm_error_log("invalid args")`
 	return E_WX_ERROR_RESOURCE_NOT_EXIST;
 }
 endsnippet
@@ -693,7 +706,7 @@ snippet acm_if_func_err_log "function call and write error log" b
 ret = ${1:func}(${2:args});
 if (ret != 0)
 {
-	`!p import re; snip.rv = acm_error_log_func(t[1])`
+	`!p snip.rv = acm_error_log_func(t[1])`
 }
 endsnippet
 
@@ -701,14 +714,14 @@ snippet acm_if_error_func_call "function call and write error log without define
 ret = ${1:func}(${2:args});
 if (ret != 0)
 {
-	`!p import re; snip.rv = acm_error_log_func(t[1])`
+	`!p snip.rv = acm_error_log_func(t[1])`
 }
 endsnippet
 
 snippet acm_if_err_log "if ret != 0 then error_tlog" "re.match(r'^\s*\w*\s*(\w+)\s*=\s*(\w+)', snip.buffer[snip.line-1])" be
 if (`!p snip.rv = snip.context.group(1)` != 0)
 {
-	`!p import re; snip.rv = acm_error_log_func(snip.context.group(2), snip.context.group(1))`
+	`!p snip.rv = acm_error_log_func(snip.context.group(2), snip.context.group(1))`
 }
 endsnippet
 
@@ -716,7 +729,7 @@ snippet acm_if_def_ret_log "define ret as function call result and then check er
 int ret = ${1:func}(${2:args});
 if (ret != 0)
 {
-	`!p import re; snip.rv = acm_error_log_func(re.split("[^\w]",t[1])[-1])`
+	`!p snip.rv = acm_error_log_func(re.split("[^\w]",t[1])[-1])`
 }
 endsnippet
 
@@ -806,6 +819,19 @@ endsnippet
 
 snippet ngr_make_ready_future "make a value feature" bw
 RpcMakeReadyFuture<${1:type}>(${3:value}))
+endsnippet
+
+snippet ngr_memvg "class member value getter" b
+${1:T} Get`!p snip.rv = camel_to_pascal(t[2])`() const { return ${2:name}; }
+endsnippet
+
+snippet ngr_memvs "class member value getter" b
+void Set`!p snip.rv = camel_to_pascal(t[2])`(${1:T} v) { ${2:name} = v; }
+endsnippet
+
+snippet ngr_memvgs "class member value getter and setter" b
+${1:T} Get`!p snip.rv = camel_to_pascal(t[2])`() const { return ${2:name}; }
+void Set`!p snip.rv = camel_to_pascal(t[2])`(${1:T} v) { ${2:name} = v; }
 endsnippet
 
 snippet ngr_todo "ngr TODO comment" bw
