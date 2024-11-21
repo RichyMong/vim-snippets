@@ -314,6 +314,12 @@ ${1:`!p camel_case_cls_name_from_file()`}(const $1 &) = delete;
 $1& operator=(const $1 &) = delete;
 endsnippet
 
+snippet cls_noncopyable_movable "a noncopyable but moveable class" b
+${1:`!p camel_case_cls_name_from_file()`}(const $1 &) = delete;
+$1& operator=(const $1 &) = delete;
+$1($1&&) = default;
+endsnippet
+
 snippet cls_noncopyable_def "A noncopyable class with name as camel case file name" b
 class ${1:`!p camel_case_cls_name_from_file()`} {
 public:
@@ -410,19 +416,19 @@ endsnippet
 
 # for (custom)
 snippet for_range_value "value range for loop" b
-for (auto ${1:it}: v){
+for (auto ${1:it}: ${2:v}){
 	${0}
 }
 endsnippet
 
 snippet for_range_reference "reference range for loop" b
-for (auto &${1:it}: v){
+for (auto &${1:it}: ${2:v}){
 	${0}
 }
 endsnippet
 
 snippet for_range_const_reference "const reference range for loop" b
-for (const auto &${1:it}: v){
+for (const auto &${1:it}: ${2:v}){
 	${0}
 }
 endsnippet
