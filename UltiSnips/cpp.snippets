@@ -146,6 +146,16 @@ snippet map "std::map (map)"
 std::map<${1:key}, ${2:value}> map$0;
 endsnippet
 
+snippet map_value_pointer_func "define a function to return map pointer" b
+auto ${1:func_name}(${2:type} ${3:key}) const {
+	auto it = ${4:map_var}.find($3);
+	if (it != $4.end()) {
+		return &it->second;
+	}
+	return nullptr;
+}
+endsnippet
+
 snippet vector "std::vector (v)"
 std::vector<${1:char}> v$0;
 endsnippet
@@ -252,11 +262,11 @@ endsnippet
 
 # std::cout
 snippet cout "cout a variable" b
-	std::cout << ${1};
+std::cout << ${1};
 endsnippet
 
 snippet coutl "cout a variable with newline" b
-	std::cout << ${1} << '\n';
+std::cout << ${1} << '\n';
 endsnippet
 
 # cpp20 starts
@@ -825,6 +835,10 @@ endsnippet
 
 snippet ngr_make_ready_future "make a value feature" bw
 RpcMakeReadyFuture<${1:type}>(${3:value}))
+endsnippet
+
+snippet ngr_memrg "class member reference getter" b
+const ${1:T}& Get`!p snip.rv = camel_to_pascal(t[2])`() const { return ${2:name}; }
 endsnippet
 
 snippet ngr_memvg "class member value getter" b
