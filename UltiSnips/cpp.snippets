@@ -260,6 +260,15 @@ endsnippet
 
 # Here start ououmania's snippets
 
+# std::cerr
+snippet cerr "cerr a variable" b
+std::cerr << ${1};
+endsnippet
+
+snippet cerrl "cerr a variable with newline" b
+std::cerr << ${1} << '\n';
+endsnippet
+
 # std::cout
 snippet cout "cout a variable" b
 std::cout << ${1};
@@ -317,6 +326,10 @@ ${1:ReturnType} ${2:`!p camel_case_cls_name_from_file()`}::${3:FunctionName}(${4
 	${5:FunctionBody}
 	${6:`!p t[1] == "void"`}
 }
+endsnippet
+
+snippet cls_virtual_default_destructor "virtual default desctructor" b
+virtual ~${1:`!p camel_case_cls_name_from_file()`}() = default;
 endsnippet
 
 snippet cls_noncopyable "a noncopyable class definition" b
