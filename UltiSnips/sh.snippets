@@ -61,13 +61,13 @@ elif ${2:[[ ${1:condition} ]]}; then
 	${0:${VISUAL}}
 endsnippet
 
-snippet for "for ... done (for)" b
+snippet for-number "for ... done (for)" b
 for (( i = 0; i < ${1:10}; i++ )); do
 	${0:${VISUAL}}
 done
 endsnippet
 
-snippet forin "for ... in ... done (forin)" b
+snippet for-in "for ... in ... done (forin)" b
 for ${1:i}${2/.+/ in /}${2:words}; do
 	${0:${VISUAL}}
 done
@@ -207,7 +207,7 @@ snippet mapfile "mapfile from a command's output" b
 mapfile -t ${0:array} < <(${1:cmd})
 endsnippet
 
-snippet readcmd "read from a command's output" b
+snippet while-read-cmd "read from a command's output" b
 while read -r ${1:var}; do
 	${0:statement}
 done < <(${2:cmd})
@@ -218,7 +218,7 @@ snippet sc-disable "disable a shellcheck rule" b
 endsnippet
 
 snippet sdir-symlink "script dir following symlink" b
-SCRIPT_DIR="\$(dirname \$(readlink -f "\$0"))"
+SCRIPT_DIR=\$(dirname "\$(readlink -f "\$0")")
 endsnippet
 
 snippet shellcheck-disable "disable a shell check rule" b

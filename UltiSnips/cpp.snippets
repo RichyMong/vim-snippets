@@ -303,6 +303,10 @@ auto ${1:name}(${2:args}) -> ${3:void} {
 };
 endsnippet
 
+snippet auto-binding "auto structured binding" b
+auto${4:&} [${1}, ${2}] = ${3};
+endsnippet
+
 snippet autor "auto type reference definition" b
 auto &${1:name} = ${2:expr};
 endsnippet
@@ -420,6 +424,12 @@ snippet c_cast "c style cast" b
 ${1:type} ${2:var} = ($1) ${3:expr};
 endsnippet
 
+snippet do-while-false "do-while statement" bw
+do {
+	${0:${VISUAL}}
+} while (false);
+endsnippet
+
 snippet enumc "enum class definition" b
 enum class ${1:name} : ${2:int} {
 	${0}
@@ -438,21 +448,39 @@ if ($1 `!p snip.rv = "!=" if match.group(1) else "=="` $2.end()) {
 endsnippet
 
 # for (custom)
-snippet for_range_value "value range for loop" b
+snippet for-range-value "value range for loop" b
 for (auto ${1:it}: ${2:v}){
-	${0}
+	${0:${VISUAL}}
 }
 endsnippet
 
-snippet for_range_reference "reference range for loop" b
+snippet for-range-reference "reference range for loop" b
 for (auto &${1:it}: ${2:v}){
-	${0}
+	${0:${VISUAL}}
 }
 endsnippet
 
-snippet for_range_const_reference "const reference range for loop" b
+snippet for-range-const-reference "const reference range for loop" b
 for (const auto &${1:it}: ${2:v}){
-	${0}
+	${0:${VISUAL}}
+}
+endsnippet
+
+snippet for-map-binding "for range loop on map items" b
+for (auto& [${1:key}, ${2:value}]: ${2:map}){
+	${3}
+}
+endsnippet
+
+snippet for-map-keys "for range loop on map keys" b
+for (const auto &${1:kvp}: ${2:v}){
+	${0}(kvp.first);
+}
+endsnippet
+
+snippet for-map-values "for range loop on map values" b
+for (const auto &${1:kvp}: ${2:v}){
+	${0}(kvp.second);
 }
 endsnippet
 
@@ -474,43 +502,43 @@ endsnippet
 
 snippet /for[-_]?(c?)ar/ "for range loop auto reference" br
 for (`!p snip.rv = "const " if match.group(1) else ""`auto &${1:x} : ${2}) {
-	${3}
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet /for[-_]?(c?)av/ "for range loop auto value" br
 for (`!p snip.rv = "const " if match.group(1) else ""`auto ${1:x} : ${2}) {
-	${3}
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet forrt "for loop index" b
 for (int ${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) {
-	${5}
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet ifdef-else "#ifdef ... #else ... #endif" b
 #ifdef ${1:SOME_DEFINE}
-${2}
+${0:${VISUAL}}
 #else // $1
-${3}
+${2}
 #endif // $1
 endsnippet
 
 snippet ifndef-else "#ifndef ... #else ... #endif" b
 #ifndef ${1:SOME_DEFINE}
-${2}
+${0:${VISUAL}}
 #else // $1
-${3}
+${2}
 #endif // $1
 endsnippet
 
 snippet if-else-macro "#if ... #else ... #endif" b
 #if ${1:SOME_FLAG}
-${2}
+${0:${VISUAL}}
 #else // $1
-${3}
+${2}
 #endif // $1
 endsnippet
 
@@ -576,6 +604,27 @@ ${1:ReturnType} ${2:FunctionName}(${3:param}) {
 }
 endsnippet
 
+snippet iwyu-ignore "avoid iwyu warning" w
+// IWYU pragma: keep
+endsnippet
+
+snippet piecewise-construct "piecewise construct" w
+std::piecewise_construct, std::forward_as_tuple(${2:key}), std::forward_as_tuple(${2:value})
+endsnippet
+
+snippet map-emplace "call map emplace with piecewise construct" b
+${1:map}.emplace(std::piecewise_construct, std::forward_as_tuple(${2:key}), std::forward_as_tuple(${2:value}));
+endsnippet
+
+snippet map-find-or-insert "use lower_bound to find in map or insert" b
+auto it = ${1:map}.lower_bound(${2:key});
+if (it != $1.end() && it->first == $2) {
+	${0}
+} else {
+	$1.emplace_hint(it, ${3:args});
+}
+endsnippet
+
 # r for reference, v for value, s for set, g for get
 snippet memvs "class member value setter" b
 void set_${1:name}(${2:type} v) { $1_ = v; }
@@ -614,6 +663,13 @@ endsnippet
 snippet memrgcm "class member const and non-const reference getter" b
 ${1:type}& ${2:name}() { return $2_; }
 const ${1:type}& ${2:name}() const { return $2_; }
+endsnippet
+
+snippet nonconst-override "nonconst function which dispatchs to the const one" b
+${1:T} ${2:name}() {
+	return const_cast<$1>(
+		const_cast<const ${3:cls}*>(this)->$2());
+}
 endsnippet
 
 snippet mutablerg "member non-const reference getter" b
@@ -794,6 +850,20 @@ snippet if_cpp_17 "if c++17 is avalialbe" b
 #if __cplusplus >= 201703L
 	${0:${VISUAL}}
 #endif
+endsnippet
+
+snippet tencent-user-begin "add a tecent modification begin comment" b
+// richymeng begin
+endsnippet
+
+snippet tencent-user-end "add a tecent modification end comment" b
+// richymeng end
+endsnippet
+
+snippet tencent-user-range "add a tecent modification range comment" b
+// richymeng begin
+${VISUAL}
+// richymeng end
 endsnippet
 
 snippet ngr_copyright "ngr copywright" bw
