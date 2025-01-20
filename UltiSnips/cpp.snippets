@@ -260,6 +260,25 @@ endsnippet
 
 # Here start ououmania's snippets
 
+##
+## Casts
+# static
+snippet sca "static_cast a variable" bw
+static_cast<${1:type}>(${0:${VISUAL}})
+endsnippet
+# dynamic
+snippet dca "dynamic_cast a variable" bw
+	dynamic_cast<${1:type}>(${0:${VISUAL}})
+endsnippet
+# reinterpret
+snippet rca "reinterpret_cast a variable" bw
+reinterpret_cast<${1:type}>(${0:${VISUAL}})
+endsnippet
+# const
+snippet cca "const_cast a variable" bw
+const_cast<${1:type}>(${0:${VISUAL}})
+endsnippet
+
 # std::cerr
 snippet cerr "cerr a variable" b
 std::cerr << ${1};
