@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 endsnippet
 
 snippet for "for loop (for)"
-for (${2:i} = 0; $2 < ${1:count}; ${3:++$2}) {
+for (${2:i} = 0; `!p snip.rv = t[2].split(' ')[-1] if t[2] else ""` < ${1:count}; ${3:++`!p snip.rv = t[2].split(' ')[-1] if t[2] else ""`}) {
 	${VISUAL}$0
 }
 endsnippet
@@ -186,6 +186,33 @@ endsnippet
 
 snippet ponce "Include guard with once"
 # pragma once
+endsnippet
+
+snippet if-gcc "if the compiler is GCC" b
+#ifdef __GNUC__
+${0:${VISUAL}}
+#endif // __GNUC__
+
+snippet if-clang "if the compiler is clang" b
+#if defined(__clang__)
+${0:${VISUAL}}
+#endif // defined(__clang__)
+
+snippet if-gcc "if the compiler is GCC or macos" b
+#ifdef __GNUC__
+${0:${VISUAL}}
+#endif // __GNUC__
+
+snippet if-vs "if the compiler is visual studio" b
+#ifdef _MSC_VER
+${0:${VISUAL}}
+#endif // _MSC_VER
+
+snippet if-windows "if the os is windows" b
+#if defined(_WIN32) || defined(_WIN64)
+${0:${VISUAL}}
+#endif // defined(_WIN32) || defined(_WIN64)
+
 endsnippet
 
 # vim:ft=snippets:

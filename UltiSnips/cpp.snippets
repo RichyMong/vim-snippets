@@ -27,8 +27,10 @@ def write_docstring_args(arglist, snip):
 
 def camel_case_cls_name_from_file():
 	import os
-	fields = os.path.splitext(fn)[0].split('_')
-	snip.rv = ''.join(x.capitalize() for x in fields)
+	name_wo_ext = os.path.splitext(fn)[0]
+	if name_wo_ext[0].isupper():
+		return name_wo_ext
+	snip.rv = ''.join(x.capitalize() for x in name_wo_ext.split('_'))
 
 # log_type: debug, infor, error_code, error_msg
 def _acm_get_log_macro(path : str, log_type: str) -> str:
@@ -623,7 +625,11 @@ ${1:ReturnType} ${2:FunctionName}(${3:param}) {
 }
 endsnippet
 
-snippet iwyu-ignore "avoid iwyu warning" w
+snippet iwyu-export "iwyu export the included header" w
+// IWYU pragma: export
+endsnippet
+
+snippet iwyu-keep "iwyu keep the included header" w
 // IWYU pragma: keep
 endsnippet
 

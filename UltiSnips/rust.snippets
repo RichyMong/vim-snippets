@@ -104,7 +104,11 @@ impl$4 ${1:Trait} for ${3:Type}${4:<${5:T}>} {
 }
 endsnippet
 
-snippet lazy_lock "String from" b
+snippet lazy_cell "LazyCell variable" b
+${1:name}: LazyCell<${2:type}> = LazyCell::new(|| ${3:initializer});
+endsnippet
+
+snippet lazy_lock "LazyLock variable" b
 ${1:name}: LazyLock<${2:type}> = LazyLock::new(|| ${3:initializer});
 endsnippet
 
