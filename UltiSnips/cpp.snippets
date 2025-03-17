@@ -563,6 +563,20 @@ ${2}
 #endif // $1
 endsnippet
 
+snippet clang-tidy-nolint-next-line "clang-tidy nolint over a range" b
+// NOLINTNEXTLINE
+endsnippet
+
+snippet clang-tidy-nolint-inline "clang-tidy inline nolint" w
+// NOLINT
+endsnippet
+
+snippet clang-tidy-nolint-range "clang-tidy nolint over a range" bw
+// NOLINTBEGIN
+${0:${VISUAL}}
+// NOLINTEND
+endsnippet
+
 snippet /if(n?)def/ "ifdef/ifndef" br
 #`!p snip.rv = "ifndef" if match.group(1) else "ifdef"` ${1:SOME_DEFINE}
 ${2}
