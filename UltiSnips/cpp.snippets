@@ -158,6 +158,14 @@ auto ${1:func_name}(${2:type} ${3:key}) const {
 }
 endsnippet
 
+snippet map_find_value_pointer "find and return map value poiner" b
+auto it = ${1:map_var}.find(${2:key});
+if (it != $1.end()) {
+	return &it->second;
+}
+return nullptr;
+endsnippet
+
 snippet vector "std::vector (v)"
 std::vector<${1:char}> v$0;
 endsnippet
@@ -336,6 +344,28 @@ snippet autov "auto type value definition" b
 auto ${1:name} = ${2:expr};
 endsnippet
 
+snippet duration_get "for range loop auto reference" b
+auto start_tp = std::chrono::steady_clock::now();
+${1:do some things}
+auto duration = std::chrono::steady_clock::now() - start_tp;
+endsnippet
+
+snippet duration_check "do some action and check duration" b
+auto start_tp = std::chrono::steady_clock::now();
+${1:do some things}
+auto duration = std::chrono::duration_cast<std::chrono::${0:milliseconds}>(std::chrono::steady_clock::now() - start_tp);
+if (duration.count() > ${2:timeout_time}) {
+}
+endsnippet
+
+snippet system_clock_now "now of system clock" w
+std::chrono::system_clock::now()
+endsnippet
+
+snippet steady_now "now of steady clock" w
+std::chrono::steady_clock::now()
+endsnippet
+
 snippet cls_construct "Class constructor" b
 ${1:`!p camel_case_cls_name_from_file()`}::${1/(\w+).*/$1/}($2) {
 }
@@ -461,6 +491,10 @@ snippet findv "std::find algorithm" b
 auto it = std::find(${1:vec}.begin(), $1.end(), ${2:var});
 endsnippet
 
+snippet find-container "call the find method of the container" b
+auto it = ${1:c}.find(${${2:var});
+endsnippet
+
 snippet /find[-_]?(not[-_]?)?end/ "find and check end" br
 auto ${1:it} = ${2:container}.find(${3:key});
 if ($1 `!p snip.rv = "!=" if match.group(1) else "=="` $2.end()) {
@@ -521,6 +555,15 @@ for (auto ${1:it} = ${2:container}.begin(); $1 != $2.end(); ) {
 }
 endsnippet
 
+snippet for-map-erase "for auto iterator to erase a map" b
+for (auto ${1:it} = ${2:container}.begin(); $1 != $2.end(); ++it) {
+	auto tmpIt = it++;
+	if (${3:expr}) {
+		tmpIt = $2.erase(tmpIt);
+	}
+}
+endsnippet
+
 snippet /for[-_]?(c?)ar/ "for range loop auto reference" br
 for (`!p snip.rv = "const " if match.group(1) else ""`auto &${1:x} : ${2}) {
 	${0:${VISUAL}}
@@ -545,6 +588,14 @@ ${0:${VISUAL}}
 #else // $1
 ${2}
 #endif // $1
+endsnippet
+
+snippet ifdef-debug "if-debug-else-release" b
+#ifndef NDEBUG
+${0:${VISUAL}}
+#else // NDEBUG
+${2}
+#endif // NDEBUG
 endsnippet
 
 snippet ifndef-else "#ifndef ... #else ... #endif" b
@@ -651,8 +702,12 @@ snippet piecewise-construct "piecewise construct" w
 std::piecewise_construct, std::forward_as_tuple(${2:key}), std::forward_as_tuple(${2:value})
 endsnippet
 
-snippet map-emplace "call map emplace with piecewise construct" b
-${1:map}.emplace(std::piecewise_construct, std::forward_as_tuple(${2:key}), std::forward_as_tuple(${2:value}));
+snippet map-piecewise-emplace "call map emplace with piecewise construct" w
+${1:map}.emplace(std::piecewise_construct, std::forward_as_tuple(${2:key}), std::forward_as_tuple(${3:value}));
+endsnippet
+
+snippet map-piecewise-hint "call map emplace_hint with piecewise construct" w
+${1:map}.emplace_hint(${4:it}, std::piecewise_construct, std::forward_as_tuple(${2:key}), std::forward_as_tuple(${3:value}));
 endsnippet
 
 snippet map-find-or-insert "use lower_bound to find in map or insert" b
@@ -906,11 +961,12 @@ ${VISUAL}
 endsnippet
 
 snippet ngr_copyright "ngr copywright" bw
-/**                                                                                                                                                            * @file `!p snip.rv=snip.fn`
- * @author richymeng (richymeng@tencent.com)
+/**
+ * @file `!p snip.rv=snip.fn`
+ * @author richymeng@tencent.com
  * @brief ${0}
  * @version 0.1
- * @date  `!v strftime("%Y-%m-%d %H:%M")`
+ * @date  `!v strftime("%Y-%m-%d")`
  *
  * @copyright Copyright (c) `!v strftime("%Y")`
  *
@@ -972,12 +1028,49 @@ void Set`!p snip.rv = camel_to_pascal(t[2])`(${1:T} v) { ${2:name} = v; }
 endsnippet
 
 snippet ngr_memvgs "class member value getter and setter" b
-${1:T} Get`!p snip.rv = camel_to_pascal(t[2])`() const { return ${2:name}; }
-void Set`!p snip.rv = camel_to_pascal(t[2])`(${1:T} v) { ${2:name} = v; }
+${1:T} Get`!p snip.rv = camel_to_pascal(t[2])`() const { return $2; }
+void Set`!p snip.rv = camel_to_pascal(t[2])`($1 v) { ${2:name} = v; }
 endsnippet
 
 snippet ngr_todo "ngr TODO comment" bw
 // TODO(richymeng): $0
+endsnippet
+
+snippet ngr_now_ms "now in ms" w
+DateTime::Now().GetTimeMS()
+endsnippet
+
+snippet ngr_now_us "now in us" w
+DateTime::Now().GetTimeUS()
+endsnippet
+
+snippet ngr_now_unix "now in unix timestamp" w
+DateTime::Now().GetUnixTimestamp()
+endsnippet
+
+snippet formatter "fmt::formatter specialization of a type" b
+template <>
+struct fmt::formatter<${1:Type}> {
+    template <typename ParseContext>
+    constexpr auto parse(ParseContext& ctx) {
+        return ctx.begin();
+    }
+
+    template <typename FormatContext>
+    auto format(const $1& value, FormatContext& ctx) {
+        return fmt::format_to(ctx.out(), "{${2:format}}", ${3:expression});
+    }
+};
+endsnippet
+
+snippet func_doxygen "Add doxygen on an existing function" b
+/**
+* @brief: ${1:brief}
+*
+* @param: `!p write_docstring_args(t[3],snip)`
+*
+* @return: `!p snip.rv = t[1]`
+*/
 endsnippet
 
 # Here end ououmania's snippets
