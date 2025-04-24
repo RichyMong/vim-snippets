@@ -273,19 +273,19 @@ endsnippet
 ##
 ## Casts
 # static
-snippet sca "static_cast a variable" bw
+snippet sca "static_cast a variable" w
 static_cast<${1:type}>(${0:${VISUAL}})
 endsnippet
 # dynamic
-snippet dca "dynamic_cast a variable" bw
+snippet dca "dynamic_cast a variable" w
 	dynamic_cast<${1:type}>(${0:${VISUAL}})
 endsnippet
 # reinterpret
-snippet rca "reinterpret_cast a variable" bw
+snippet rca "reinterpret_cast a variable" w
 reinterpret_cast<${1:type}>(${0:${VISUAL}})
 endsnippet
 # const
-snippet cca "const_cast a variable" bw
+snippet cca "const_cast a variable" w
 const_cast<${1:type}>(${0:${VISUAL}})
 endsnippet
 
@@ -842,6 +842,10 @@ class Message;
 } // google
 endsnippet
 
+snippet pbmsg "google protobuf Message type" w
+google::protobuf::Message
+endsnippet
+
 snippet pb_rep_forward_decl "protobuf RepeatedField forward declaration" b
 namespace google {
 namespace protobuf {
@@ -960,6 +964,10 @@ ${VISUAL}
 // richymeng end
 endsnippet
 
+snippet ngr_assert_args "ngr ASSERT_RETURN on function arguments" b
+ASSERT_RETURN(${1}, v: msg::ERROR_PARAM_INVALID);
+endsnippet
+
 snippet ngr_copyright "ngr copywright" bw
 /**
  * @file `!p snip.rv=snip.fn`
@@ -1046,6 +1054,18 @@ endsnippet
 
 snippet ngr_now_unix "now in unix timestamp" w
 DateTime::Now().GetUnixTimestamp()
+endsnippet
+
+snippet ngr_pb_release_guard "ScopeGuard object to release pb allocated" w
+ScopeGuard ${1:guard}([&${2:msg}]() {
+	$2.release_${3:obj}();
+});
+endsnippet
+
+snippet ngr_scope_guard "ScopeGuard object" w
+ScopeGuard ${1:guard}([${2:capture}]() {
+	${3:statement}
+});
 endsnippet
 
 snippet formatter "fmt::formatter specialization of a type" b
