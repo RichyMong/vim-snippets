@@ -235,7 +235,7 @@ snippet sc-disable "disable a shellcheck rule" b
 endsnippet
 
 snippet sdir-symlink "script dir following symlink" b
-SCRIPT_DIR=\$(dirname "\$(readlink -f "\$0")")
+SCRIPT_DIR=\$(dirname "\$(readlink -f "\${BASH_SOURCE[0]}")")
 endsnippet
 
 snippet shellcheck-disable "disable a shell check rule" b
