@@ -205,69 +205,6 @@ ${1:ReturnType} ${2:FunctionName}(${3:param})
 }
 endsnippet
 
-snippet boost_test "Boost test module" b
-#define BOOST_TEST_MODULE ${1:TestModuleName}
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_CASE(${2:TestCaseName})
-{
-	${0:TestDefinition}
-}
-
-endsnippet
-
-snippet boost_suite "Boost test suite module" b
-#define BOOST_TEST_MODULE ${1:TestModuleName}
-#include <boost/test/included/unit_test.hpp>
-
-BOOST_AUTO_TEST_SUITE(${2:SuiteName})
-
-BOOST_AUTO_TEST_CASE(${3:TestCaseName})
-{
-	${0:TestDefinition}
-}
-
-BOOST_AUTO_TEST_SUITE_END()
-
-endsnippet
-snippet boost_test_fixture "Boost test module with fixture" b
-#define BOOST_TEST_MODULE ${1:TestModuleName}
-#include <boost/test/included/unit_test.hpp>
-
-struct ${2:FixtureName} {
-	$2() {}
-	virtual ~$2() {}
-	/* define members here */
-};
-
-BOOST_FIXTURE_TEST_CASE(${3:SuiteName}, $2)
-{
-	${0:TestDefinition}
-}
-
-endsnippet
-
-snippet boost_suite_fixture "Boost test suite with fixture" b
-#define BOOST_TEST_MODULE ${1:TestModuleName}
-#include <boost/test/included/unit_test.hpp>
-
-struct ${2:FixtureName} {
-	$2() {}
-	virtual ~$2() {}
-	/* define members here */
-};
-
-BOOST_FIXTURE_TEST_SUITE(${3:SuiteName}, $2)
-
-BOOST_AUTO_TEST_CASE(${4:TestCaseName})
-{
-	${0:TestDefinition}
-}
-
-BOOST_AUTO_TEST_SUITE_END()
-
-endsnippet
-
 # Here start ououmania's snippets
 
 ##
@@ -933,21 +870,27 @@ snippet acm_error "acm error log" b
 endsnippet
 
 snippet if_cpp_11 "if c++11 is avalialbe" b
-#if __cplusplus >= 201103
+#if __cplusplus >= 201103L
 	${0:${VISUAL}}
-#endif
+#endif // c++11
 endsnippet
 
 snippet if_cpp_14 "if c++14 is avalialbe" b
-#if __cplusplus >= 201300
+#if __cplusplus >= 201300L
 	${0:${VISUAL}}
-#endif
+#endif // c++14
 endsnippet
 
 snippet if_cpp_17 "if c++17 is avalialbe" b
 #if __cplusplus >= 201703L
 	${0:${VISUAL}}
-#endif
+#endif // c++17
+endsnippet
+
+snippet if_cpp_20 "if c++17 is avalialbe" b
+#if __cplusplus >= 202002L
+	${0:${VISUAL}}
+#endif // c++20
 endsnippet
 
 snippet tencent-user-begin "add a tecent modification begin comment" b
@@ -1091,6 +1034,15 @@ snippet func_doxygen "Add doxygen on an existing function" b
 *
 * @return: `!p snip.rv = t[1]`
 */
+endsnippet
+
+snippet gtest_include "include the gtest header file" b
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+endsnippet
+
+snippet gtest_expect_elements "expect elments are" b
+EXPECT_THAT(${1:var}, ElementsAre(${2:exp}));
 endsnippet
 
 # Here end ououmania's snippets

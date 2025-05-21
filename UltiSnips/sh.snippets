@@ -148,9 +148,20 @@ echo "usage: ${FUNCNAME[0]} ${1:<args>}"
 return `!p snip.rv = 1 if match.group(1) else 0`
 endsnippet
 
-snippet if_argc_error "error if argc doesn't meet the condition" b
+snippet echo_error "echo to std error" b
+echo "${1:error}" >&2
+endsnippet
+
+snippet if_func_argc_error "error if argc doesn't meet the condition" b
 if [[ $# -${1:lt} ${2:number} ]]; then
 	echo "Usage: ${FUNCNAME[0]} ${3:<args>} ${4:[options]}"
+	return 1
+fi
+endsnippet
+
+snippet if_script_argc_error "error if argc doesn't meet the condition" b
+if [[ $# -${1:lt} ${2:number} ]]; then
+	echo "Usage: ${0} ${3:<args>} ${4:[options]}"
 	return 1
 fi
 endsnippet
@@ -179,6 +190,12 @@ endsnippet
 
 snippet if_which "if which xxx then" b
 if which ${1:cmd} &>/dev/null; then
+	${0:${VISUAL}}
+fi
+endsnippet
+
+snippet if_not_which "if which xxx then" b
+if ! which ${1:cmd} &>/dev/null; then
 	${0:${VISUAL}}
 fi
 endsnippet
