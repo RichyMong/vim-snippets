@@ -1001,7 +1001,7 @@ endsnippet
 
 snippet ngr_pb_release_guard "ScopeGuard object to release pb allocated" w
 ScopeGuard ${1:guard}([&${2:msg}]() {
-	$2.release_${3:obj}();
+	std::ignore = $2.release_${3:obj}();
 });
 endsnippet
 

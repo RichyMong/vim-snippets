@@ -91,6 +91,10 @@ snippet allow "allow lint attribute" b
 	#[allow(${1:unused_variables})]
 snippet cfg "cfg attribute" b
 	#[cfg(${1:target_os = "linux"})]
+snippet cfg_feature "cfg feature" b
+	#[cfg(feature = "${1:feature}")]
+snippet cfg_not_feature "cfg feature" b
+	#[!cfg(feature = "${1:feature}")]
 snippet feat "feature attribute" b
 	#![feature(${1:plugin})]
 snippet der "#[derive(..)]" b

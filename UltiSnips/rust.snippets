@@ -44,8 +44,14 @@ snippet .it ".iter()" i
 .iter()$0
 endsnippet
 
-snippet impl "Struct/Trait implementation" b
-impl$4 ${1:Type/Trait}${2: for ${3:Type}}${4:<${5:T}>} {
+snippet impl "impl struct" b
+impl ${1:Type} {
+	${0}
+}
+endsnippet
+
+snippet implt "impl trait for a struct" b
+impl$3 ${1:Trait} for ${2:Type}${3:<${4:T}>} {
 	${0}
 }
 endsnippet
@@ -155,6 +161,14 @@ snippet pfd "pub field" b
 pub ${1:name}: ${2:type},
 endsnippet
 
+snippet serde_derive "serde derive" b
+#[serde(${1:attr})]
+endsnippet
+
+snippet serde_rename "serde rename enum field" b
+#[serde(rename_all = ${1|lowercase,UPPERCASE,PascalCase,camelCase,snake_case,SCREAMING_SNAKE_CASE,kebab-case,SCREAMING-KEBAB-CASE})]
+endsnippet
+
 snippet serde_flatten "serde field attribute" b
 #[serde(flatten)]
 endsnippet
@@ -214,6 +228,14 @@ snippet string_new "string new" w
 let mut ${1:s} = String::new();
 endsnippet
 
+snippet strum_enum "define a strum enum" b
+#[derive(Clone, Copy, Debug, EnumIter, EnumString, PartialEq, strum_macros::Display)]
+#[strum(serialize_all = "${2|lowercase,uppercase,snake_case|}")]
+pub enum ${1:EnumType} {
+    ${3}
+}
+endsnippet
+
 # define a function of a trait
 snippet trait_fn "add new function to trait" b
 fn ${1:name}(${3}) -> ${4};
@@ -245,6 +267,36 @@ endsnippet
 
 snippet vec_push "push to a vector" b
 ${1:vec}.push(${2:val});
+endsnippet
+
+####################snippets for crates####################
+snippet clap_arg_default_value "define a clap argument with default value" b
+#[arg(short, long, default_value_t = ${3:value})]
+${1:name}: ${2:type},
+endsnippet
+
+snippet clap_arg_possible_value "define a clap argument with possible value" b
+#[arg(short, long, value_parser = clap::builder::PossibleValuesParser::new(${3}))]
+${1:name}: ${2:type},
+endsnippet
+
+snippet clap_arg_subcommnad "define a clap subcommand argument" b
+#[command(subcommand)]
+${1:name}: ${2:type},
+endsnippet
+
+snippet clap_enum_subcommand "define a clap subcommand enum" b
+#[derive(Debug, Subcommand)]
+enum ${1:Commands} {
+    ${2:Name}(${3:Type}),
+}
+endsnippet
+
+snippet clap_enum_value "define a clap value enum" b
+#[derive(Clone, Debug, ValueEnum)]
+enum ${1:EnumType} {
+	${2:Name} = ${3:Value},
+}
 endsnippet
 
 # vim:ft=snippets:
