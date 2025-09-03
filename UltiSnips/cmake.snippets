@@ -1,0 +1,59 @@
+priority -50
+
+# https://cmake.org/cmake/help/latest/command/define_property.html
+snippet define_prop "define a property" b
+define_property(${1|GLOBAL,DIRECTORY,TARGET,SOURCE,TEST,VARIABLE,CACHED_VARIABLE} PROPERTY ${2:PROPERTY_NAME}
+    BRIEF_DOCS "${3:brief description}"
+    FULL_DOCS "${4:detail description}"
+)
+endsnippet
+
+snippet foreach "foreach" b
+foreach(${1:VAR} ${2:elements})
+endforeach()
+endsnippet
+
+snippet function "define a functin" b
+function(${1:FUNC_NAME})
+	${2:function-body}
+endfunction()
+endsnippet
+
+snippet get_prop "get a property" b
+get_property(${1:var} ${2|GLOBAL,DIRECTORY,TARGET,SOURCE,TEST,CACHE,VARIABLE} PROPERTY ${3:PROPERTY_NAME} ${4|SET,DEFINED,BRIEF_DOCS,FULL_DOCS})
+endsnippet
+
+snippet if "if statement" b
+if(${1:expression})
+	${2:statement}
+endif()
+endsnippet
+
+snippet ifelse "if else statement" b
+if(${1:expression})
+	${2:if-statement}
+else(${3})
+	${4:else-statement}
+endif()
+endsnippet
+
+snippet macro "define a macro" b
+macro(${1:MACRO_NAME} ${2:ARGS})
+	${3:definition}
+endmacro()
+endsnippet
+
+snippet option "add an option" b
+option(${1:NAME} "${2:desc}" ${3|ON,OFF})
+endsnippet
+
+snippet parse-args "parse function arguments" b
+cmake_parse_arguments(PARSE_ARGV ${1:start_index} ${2:prefix> ${3:options}
+                      ${4:one_value_keywords} ${5:multi_value_keywords})
+endsnippet
+
+# https://cmake.org/cmake/help/latest/command/set_property.html#command:set_property
+snippet set_prop "set a property" b
+set_property(${1|GLOBAL,DIRECTORY,TARGET,SOURCE,INSTALL,TEST,CACHE} PROPERTY ${2:NAME} ${3:VALUE})
+endsnippet
+

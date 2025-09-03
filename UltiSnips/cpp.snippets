@@ -1020,7 +1020,7 @@ struct fmt::formatter<${1:Type}> {
     }
 
     template <typename FormatContext>
-    auto format(const $1& value, FormatContext& ctx) {
+    auto format(const $1& value, FormatContext& ctx) const {
         return fmt::format_to(ctx.out(), "{${2:format}}", ${3:expression});
     }
 };
