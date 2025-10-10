@@ -165,8 +165,12 @@ snippet serde_derive "serde derive" b
 #[serde(${1:attr})]
 endsnippet
 
-snippet serde_rename "serde rename enum field" b
+snippet serde_rename_all "serde rename the struct with case" b
 #[serde(rename_all = ${1|lowercase,UPPERCASE,PascalCase,camelCase,snake_case,SCREAMING_SNAKE_CASE,kebab-case,SCREAMING-KEBAB-CASE})]
+endsnippet
+
+snippet serde_rename "serde rename a field" b
+#[serde(rename = "${1:name}")]
 endsnippet
 
 snippet serde_flatten "serde field attribute" b
@@ -174,7 +178,7 @@ snippet serde_flatten "serde field attribute" b
 endsnippet
 
 snippet serde_skip_serialize_all_none "serde skip serialize all the none fields" b
-#[serde(skip_serializing_if = "Option::is_none")]
+#[serde_with::skip_serializing_none]
 endsnippet
 
 snippet serde_skip_serialize_none_field "serde skip serialize a none field" b
