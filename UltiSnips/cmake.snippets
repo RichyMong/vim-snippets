@@ -29,6 +29,44 @@ if(${1:expression})
 endif()
 endsnippet
 
+snippet match-build-type "match the build type" b
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
+	${1:debug}
+elseif (CMAKE_BUILD_TYPE STREQUAL Release)
+	${1:release}
+endif()
+endsnippet
+
+snippet if-clang "if the compiler is clang" b
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
+	${0:${VISUAL}}
+endif()
+endsnippet
+
+snippet if-debug "if the build type is Debug" b
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
+	${0:${VISUAL}}
+endif()
+endsnippet
+
+snippet if-relwithdebinfo "if the build type is RelWithDebInfo" b
+if (CMAKE_BUILD_TYPE STREQUAL RelWithDebInfo)
+	${0:${VISUAL}}
+endif()
+endsnippet
+
+snippet if-release "if the build type is Release" b
+if (CMAKE_BUILD_TYPE STREQUAL Release)
+	${0:${VISUAL}}
+endif()
+endsnippet
+
+snippet if-gcc "if the compiler is gcc" b
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU")
+	${0:${VISUAL}}
+endif()
+endsnippet
+
 snippet ifelse "if else statement" b
 if(${1:expression})
 	${2:if-statement}
@@ -43,12 +81,16 @@ macro(${1:MACRO_NAME} ${2:ARGS})
 endmacro()
 endsnippet
 
+snippet status "message with STATUS level" b
+message(STATUS "${1:text}")
+endsnippet
+
 snippet option "add an option" b
 option(${1:NAME} "${2:desc}" ${3|ON,OFF})
 endsnippet
 
 snippet parse-args "parse function arguments" b
-cmake_parse_arguments(PARSE_ARGV ${1:start_index} ${2:prefix> ${3:options}
+cmake_parse_arguments(PARSE_ARGV ${1:start_index} ${2:prefix} ${3:options}
                       ${4:one_value_keywords} ${5:multi_value_keywords})
 endsnippet
 
@@ -57,3 +99,14 @@ snippet set_prop "set a property" b
 set_property(${1|GLOBAL,DIRECTORY,TARGET,SOURCE,INSTALL,TEST,CACHE} PROPERTY ${2:NAME} ${3:VALUE})
 endsnippet
 
+snippet target-link "link a library" b
+	target_link_libraries(${1:target} ${2|PUBLIC,PRIVATE,INTERFACE} ${0:somelib})
+endsnippet
+
+snippet target-include "include a directory" b
+	target_include_directories(${1:target} ${2|PUBLIC,PRIVATE,INTERFACE} ${0:dir})
+endsnippet
+
+snippet target-options "add compile options" b
+	target_compile_options(${1:target} ${2|PUBLIC,PRIVATE,INTERFACE} ${0:options})
+endsnippet
