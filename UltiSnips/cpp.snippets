@@ -269,7 +269,7 @@ auto ${1:name}(${2:args}) -> ${3:void} {
 };
 endsnippet
 
-snippet auto-binding "auto structured binding" b
+snippet auto_binding "auto structured binding" b
 auto${4:&} [${1}, ${2}] = ${3};
 endsnippet
 
@@ -412,7 +412,7 @@ snippet c_cast "c style cast" b
 ${1:type} ${2:var} = ($1) ${3:expr};
 endsnippet
 
-snippet do-while-false "do-while statement" bw
+snippet do_while_false "do_while statement" bw
 do {
 	${0:${VISUAL}}
 } while (false);
@@ -428,11 +428,11 @@ snippet findv "std::find algorithm" b
 auto it = std::find(${1:vec}.begin(), $1.end(), ${2:var});
 endsnippet
 
-snippet find-container "call the find method of the container" b
+snippet find_container "call the find method of the container" b
 auto it = ${1:c}.find(${${2:var});
 endsnippet
 
-snippet /find[-_]?(not[-_]?)?end/ "find and check end" br
+snippet /find[__]?(not[__]?)?end/ "find and check end" br
 auto ${1:it} = ${2:container}.find(${3:key});
 if ($1 `!p snip.rv = "!=" if match.group(1) else "=="` $2.end()) {
 	${0:${VISUAL}}
@@ -440,37 +440,37 @@ if ($1 `!p snip.rv = "!=" if match.group(1) else "=="` $2.end()) {
 endsnippet
 
 # for (custom)
-snippet for-range-value "value range for loop" b
+snippet for_range_value "value range for loop" b
 for (auto ${1:it}: ${2:v}){
 	${0:${VISUAL}}
 }
 endsnippet
 
-snippet for-range-reference "reference range for loop" b
+snippet for_range_reference "reference range for loop" b
 for (auto &${1:it}: ${2:v}){
 	${0:${VISUAL}}
 }
 endsnippet
 
-snippet for-range-const-reference "const reference range for loop" b
+snippet for_range_const_reference "const reference range for loop" b
 for (const auto &${1:it}: ${2:v}){
 	${0:${VISUAL}}
 }
 endsnippet
 
-snippet for-map-binding "for range loop on map items" b
+snippet for_map_binding "for range loop on map items" b
 for (auto& [${1:key}, ${2:value}]: ${2:map}){
 	${3}
 }
 endsnippet
 
-snippet for-map-keys "for range loop on map keys" b
+snippet for_map_keys "for range loop on map keys" b
 for (const auto &${1:kvp}: ${2:v}){
 	${0}(kvp.first);
 }
 endsnippet
 
-snippet for-map-values "for range loop on map values" b
+snippet for_map_values "for range loop on map values" b
 for (const auto &${1:kvp}: ${2:v}){
 	${0}(kvp.second);
 }
@@ -492,7 +492,7 @@ for (auto ${1:it} = ${2:container}.begin(); $1 != $2.end(); ) {
 }
 endsnippet
 
-snippet for-map-erase "for auto iterator to erase a map" b
+snippet for_map_erase "for auto iterator to erase a map" b
 for (auto ${1:it} = ${2:container}.begin(); $1 != $2.end(); ++it) {
 	auto tmpIt = it++;
 	if (${3:expr}) {
@@ -501,13 +501,13 @@ for (auto ${1:it} = ${2:container}.begin(); $1 != $2.end(); ++it) {
 }
 endsnippet
 
-snippet /for[-_]?(c?)ar/ "for range loop auto reference" br
+snippet /for[__]?(c?)ar/ "for range loop auto reference" br
 for (`!p snip.rv = "const " if match.group(1) else ""`auto &${1:x} : ${2}) {
 	${0:${VISUAL}}
 }
 endsnippet
 
-snippet /for[-_]?(c?)av/ "for range loop auto value" br
+snippet /for[__]?(c?)av/ "for range loop auto value" br
 for (`!p snip.rv = "const " if match.group(1) else ""`auto ${1:x} : ${2}) {
 	${0:${VISUAL}}
 }
@@ -519,7 +519,7 @@ for (int ${1:i} = ${2:0}; ${3:$1 < 10}; $1${4:++}) {
 }
 endsnippet
 
-snippet ifdef-else "#ifdef ... #else ... #endif" b
+snippet ifdef_else "#ifdef ... #else ... #endif" b
 #ifdef ${1:SOME_DEFINE}
 ${0:${VISUAL}}
 #else // $1
@@ -527,7 +527,7 @@ ${2}
 #endif // $1
 endsnippet
 
-snippet ifdef-debug "if-debug-else-release" b
+snippet ifdef_debug "if_debug_else_release" b
 #ifndef NDEBUG
 ${0:${VISUAL}}
 #else // NDEBUG
@@ -535,7 +535,7 @@ ${2}
 #endif // NDEBUG
 endsnippet
 
-snippet ifndef-else "#ifndef ... #else ... #endif" b
+snippet ifndef_else "#ifndef ... #else ... #endif" b
 #ifndef ${1:SOME_DEFINE}
 ${0:${VISUAL}}
 #else // $1
@@ -543,7 +543,7 @@ ${2}
 #endif // $1
 endsnippet
 
-snippet if-else-macro "#if ... #else ... #endif" b
+snippet if_else_macro "#if ... #else ... #endif" b
 #if ${1:SOME_FLAG}
 ${0:${VISUAL}}
 #else // $1
@@ -551,15 +551,15 @@ ${2}
 #endif // $1
 endsnippet
 
-snippet clang-tidy-nolint-next-line "clang-tidy nolint over a range" b
+snippet clang_tidy_nolint_next_line "clang_tidy nolint over a range" b
 // NOLINTNEXTLINE
 endsnippet
 
-snippet clang-tidy-nolint-inline "clang-tidy inline nolint" w
+snippet clang_tidy_nolint_inline "clang_tidy inline nolint" w
 // NOLINT
 endsnippet
 
-snippet clang-tidy-nolint-range "clang-tidy nolint over a range" bw
+snippet clang_tidy_nolint_range "clang_tidy nolint over a range" bw
 // NOLINTBEGIN
 ${0:${VISUAL}}
 // NOLINTEND
@@ -573,37 +573,37 @@ ${3}
 #endif // $1
 endsnippet
 
-snippet /if[-_]?(not[-_]?)?end/ "if-or-not end" br
+snippet /if[__]?(not[__]?)?end/ "if_or_not end" br
 if (${1:it} `!p snip.rv = "!=" if match.group(1) else "=="` ${2:container}.end()) {
 	${0:${VISUAL}}
 }
 endsnippet
 
-snippet /if[-_]?(not[_-]?)?(0|zero)/ "if ==/!= 0" br
+snippet /if[__]?(not[__]?)?(0|zero)/ "if ==/!= 0" br
 if (${1:name} `!p snip.rv = "!=" if match.group(1) else "=="` 0) {
 	${0:${VISUAL}}
 }
 endsnippet
 
-snippet if-not "simply if! block" b
+snippet if_not "simply if! block" b
 if (!${1:expr}) {
 	${0:${VISUAL}}
 }
 endsnippet
 
-snippet /if[_-]?(not[_-])?null/ "simply null check" br
+snippet /if[__]?(not[__])?null/ "simply null check" br
 if (${1:name} `!p snip.rv = "!=" if match.group(1) else "=="` nullptr) {
 	${0:${VISUAL}}
 }
 endsnippet
 
-snippet /if[-_]?(not[-_]?)?empty/ "if a container is empty or not" br
+snippet /if[__]?(not[__]?)?empty/ "if a container is empty or not" br
 if (`!p snip.rv = "!" if match.group(1) else ""`${1:name}.empty()) {
 	${2:${VISUAL}}
 }
 endsnippet
 
-snippet /if[-_]?(likely|unlikely)/ "if likely/unlikely" br
+snippet /if[__]?(likely|unlikely)/ "if likely/unlikely" br
 if (`!p snip.rv = match.group(1)`(${1:expr})) {
 	${2:${VISUAL}}
 }
@@ -617,37 +617,37 @@ snippet incr "include a file relatively" b
 #include "${1:iostream}"
 endsnippet
 
-snippet inline-const-mfun "inline const member function" b
+snippet inline_const_mfun "inline const member function" b
 ${1:ReturnType} ${2:FunctionName}(${3:param}) const {
 }
 endsnippet
 
-snippet inline-mfun "inline member function" b
+snippet inline_mfun "inline member function" b
 ${1:ReturnType} ${2:FunctionName}(${3:param}) {
 }
 endsnippet
 
-snippet iwyu-export "iwyu export the included header" w
+snippet iwyu_export "iwyu export the included header" w
 // IWYU pragma: export
 endsnippet
 
-snippet iwyu-keep "iwyu keep the included header" w
+snippet iwyu_keep "iwyu keep the included header" w
 // IWYU pragma: keep
 endsnippet
 
-snippet piecewise-construct "piecewise construct" w
+snippet piecewise_construct "piecewise construct" w
 std::piecewise_construct, std::forward_as_tuple(${2:key}), std::forward_as_tuple(${2:value})
 endsnippet
 
-snippet map-piecewise-emplace "call map emplace with piecewise construct" w
+snippet map_piecewise_emplace "call map emplace with piecewise construct" w
 ${1:map}.emplace(std::piecewise_construct, std::forward_as_tuple(${2:key}), std::forward_as_tuple(${3:value}));
 endsnippet
 
-snippet map-piecewise-hint "call map emplace_hint with piecewise construct" w
+snippet map_piecewise_hint "call map emplace_hint with piecewise construct" w
 ${1:map}.emplace_hint(${4:it}, std::piecewise_construct, std::forward_as_tuple(${2:key}), std::forward_as_tuple(${3:value}));
 endsnippet
 
-snippet map-find-or-insert "use lower_bound to find in map or insert" b
+snippet map_find_or_insert "use lower_bound to find in map or insert" b
 auto it = ${1:map}.lower_bound(${2:key});
 if (it != $1.end() && it->first == $2) {
 	${0}
@@ -691,26 +691,26 @@ snippet memrgcd "member const reference getter declare" b
 const ${1:T} ${2:name}() const;
 endsnippet
 
-snippet memrgcm "class member const and non-const reference getter" b
+snippet memrgcm "class member const and non_const reference getter" b
 ${1:type}& ${2:name}() { return $2_; }
 const ${1:type}& ${2:name}() const { return $2_; }
 endsnippet
 
-snippet nonconst-override "nonconst function which dispatchs to the const one" b
+snippet nonconst_override "nonconst function which dispatchs to the const one" b
 ${1:T} ${2:name}() {
 	return const_cast<$1>(
 		const_cast<const ${3:cls}*>(this)->$2());
 }
 endsnippet
 
-snippet mutablerg "member non-const reference getter" b
+snippet mutablerg "member non_const reference getter" b
 ${1:T} ${2:name}() {
 	return const_cast<$1>(
 		const_cast<const ${3:cls}*>(this)->$2());
 }
 endsnippet
 
-snippet memcgmr "mem const and non-const reference getter" b
+snippet memcgmr "mem const and non_const reference getter" b
 const ${1:type}& ${2:name}() const;
 $1& $2() {
 	return const_cast<$1&>(
@@ -718,7 +718,7 @@ $1& $2() {
 }
 endsnippet
 
-snippet memcgmp "mem const and non-const pointer getter" b
+snippet memcgmp "mem const and non_const pointer getter" b
 const ${1:type}* ${2:name}() const;
 $1* $2() {
 	return const_cast<$1*>(
@@ -747,7 +747,7 @@ snippet ptr_triple "?: check ptr null" b
 endsnippet
 
 # c++23,c++21,c++17,c++14,c++11
-snippet standard-version "check cpp standand version" b
+snippet standard_version "check cpp standand version" b
 #if __cplusplus ${1|>=,==,<|} ${2|202101L,202002L,201703L,201402L,201103L|}
 ${3}
 #else  // __cplusplus $1 $2
@@ -838,7 +838,7 @@ if (ret != 0)
 }
 endsnippet
 
-snippet acm_if_err_log "if ret != 0 then error_tlog" "re.match(r'^\s*\w*\s*(\w+)\s*=\s*(\w+)', snip.buffer[snip.line-1])" be
+snippet acm_if_err_log "if ret != 0 then error_tlog" "re.match(r'^\s*\w*\s*(\w+)\s*=\s*(\w+)', snip.buffer[snip.line_1])" be
 if (`!p snip.rv = snip.context.group(1)` != 0)
 {
 	`!p snip.rv = acm_error_log_func(snip.context.group(2), snip.context.group(1))`
@@ -861,7 +861,7 @@ if (${1:name})
 }
 endsnippet
 
-snippet /acm[-_]?(debug|info|infor|warn)/ "acm log" br
+snippet /acm[__]?(debug|info|infor|warn)/ "acm log" br
 `!p snip.rv = acm_get_macro_by_buffer(match.group(1))`("${1:fmt}", ${2:args});
 endsnippet
 
@@ -893,15 +893,15 @@ snippet if_cpp_20 "if c++17 is avalialbe" b
 #endif // c++20
 endsnippet
 
-snippet tencent-user-begin "add a tecent modification begin comment" b
+snippet tx_user_begin "add a tencent modification begin comment" b
 // richymeng begin
 endsnippet
 
-snippet tencent-user-end "add a tecent modification end comment" b
+snippet tx_user_end "add a tencent modification end comment" b
 // richymeng end
 endsnippet
 
-snippet tencent-user-range "add a tecent modification range comment" b
+snippet tx_user_range "add a tencent modification range comment" b
 // richymeng begin
 ${VISUAL}
 // richymeng end
@@ -924,11 +924,11 @@ snippet ngr_copyright "ngr copywright" bw
  */
 endsnippet
 
-snippet /ngr[-_]?(debug|error|info|warn)/ "ngr log" br
+snippet /ngr[__]?(debug|error|info|warn)/ "ngr log" br
 `!p snip.rv = "LOG_" + match.group(1).upper()`("${1:fmt}", ${2:args});
 endsnippet
 
-snippet /ngr[-_]?actor[-_]?(debug|error|info|warn)/ "ngr log" br
+snippet /ngr[__]?actor[__]?(debug|error|info|warn)/ "ngr log" br
 `!p snip.rv = "ACTOR_LOG_" + match.group(1).upper()`(${1:actor}, "${2:fmt}", ${3:args});
 endsnippet
 
@@ -1012,15 +1012,15 @@ ScopeGuard ${1:guard}([${2:capture}]() {
 endsnippet
 
 # from https://devops.woa.com/console/codecc/ngr-gp/checker/list
-snippet tx-wecheck-ignore "wecheck ignore line" b
+snippet tx_wecheck_ignore "wecheck ignore line" b
 // wecheck[${1:assert_side_effect|assign_itself|bad_alloc_arith|bad_alloc_strlen|bad_alloc_zero|bad_free|bad_shift|bad_sizeof_shift|cast_type_match|constant_expression_result|copyfrom_detect|copyfrom_sametype_detect|copy_paste_error|c_cpp_error|danger_function|dead_code|delete_array|delete_void|deprecated_func|divide_zero|dupmap_search|enum_return_for_bool|fmt_print|forward_null|for_init_type|identical_expression|infinite_loop|invalidate_iterator|invalidate_memoryuse|large_dynamic_stack_variable|large_stack_variable|memory_leak|memset_on_container|missing_break|moneytype_check|narrowing_conversion|negative_returns|nested_loop_induction_coupling|non_pod_memset|null_returns|overflow_before_widen|overflow_loop|overrun|pass_by_value|pointer_container_deref|pointer_return|printf_args|printf_inject|resource_leak|return_local|reverse_null|same_func_call|same_induction|same_init|same_ternary_return|size_check|special_type_check|strcopy_detect|swapped_arguments|syscall_buffer_overflow|thread_function|ue_auto_keyword_abuse|ue_base_type_no_dllexport|ue_blueprint_class_not_impl|ue_const_method|ue_container|ue_implicit_override|ue_interface_decl|ue_marco_use_in_multiline|ue_netdirty_assign|ue_null_keyword|ue_object_decl_naming|ue_strong_type_uenum|ue_uelog_args|ue_unsafe_lambda|ue_uobject_body|ue_uobject_field|ue_uobject_head|ue_uproperty_enum_replacable|uncaught_except|uninitialize_value|uninit_ctor|unintended_integer_division|unreachable|unsafe_lambda|unsafe_pointer_map_value|unsigned_integer_substraction|unsigned_num_overflow|unused_return_value|valist_uninitialized|valist_unterminated|wrapper_escape|wrong_type_loop|wxzf_cpp_error}]
 endsnippet
 
-snippet tx-wecheck-disable "wecheck disable from this line" b
+snippet tx_wecheck_disable "wecheck disable from this line" b
 // wecheck[::disable]
 endsnippet
 
-snippet tx-wecheck-enable "wecheck enable from this line" b
+snippet tx_wecheck_enable "wecheck enable from this line" b
 // wecheck[::enable]
 endsnippet
 
