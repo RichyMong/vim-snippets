@@ -1011,6 +1011,19 @@ ScopeGuard ${1:guard}([${2:capture}]() {
 });
 endsnippet
 
+# from https://devops.woa.com/console/codecc/ngr-gp/checker/list
+snippet tx-wecheck-ignore "wecheck ignore line" b
+// wecheck[${1:assert_side_effect|assign_itself|bad_alloc_arith|bad_alloc_strlen|bad_alloc_zero|bad_free|bad_shift|bad_sizeof_shift|cast_type_match|constant_expression_result|copyfrom_detect|copyfrom_sametype_detect|copy_paste_error|c_cpp_error|danger_function|dead_code|delete_array|delete_void|deprecated_func|divide_zero|dupmap_search|enum_return_for_bool|fmt_print|forward_null|for_init_type|identical_expression|infinite_loop|invalidate_iterator|invalidate_memoryuse|large_dynamic_stack_variable|large_stack_variable|memory_leak|memset_on_container|missing_break|moneytype_check|narrowing_conversion|negative_returns|nested_loop_induction_coupling|non_pod_memset|null_returns|overflow_before_widen|overflow_loop|overrun|pass_by_value|pointer_container_deref|pointer_return|printf_args|printf_inject|resource_leak|return_local|reverse_null|same_func_call|same_induction|same_init|same_ternary_return|size_check|special_type_check|strcopy_detect|swapped_arguments|syscall_buffer_overflow|thread_function|ue_auto_keyword_abuse|ue_base_type_no_dllexport|ue_blueprint_class_not_impl|ue_const_method|ue_container|ue_implicit_override|ue_interface_decl|ue_marco_use_in_multiline|ue_netdirty_assign|ue_null_keyword|ue_object_decl_naming|ue_strong_type_uenum|ue_uelog_args|ue_unsafe_lambda|ue_uobject_body|ue_uobject_field|ue_uobject_head|ue_uproperty_enum_replacable|uncaught_except|uninitialize_value|uninit_ctor|unintended_integer_division|unreachable|unsafe_lambda|unsafe_pointer_map_value|unsigned_integer_substraction|unsigned_num_overflow|unused_return_value|valist_uninitialized|valist_unterminated|wrapper_escape|wrong_type_loop|wxzf_cpp_error}]
+endsnippet
+
+snippet tx-wecheck-disable "wecheck disable from this line" b
+// wecheck[::disable]
+endsnippet
+
+snippet tx-wecheck-enable "wecheck enable from this line" b
+// wecheck[::enable]
+endsnippet
+
 snippet formatter "fmt::formatter specialization of a type" b
 template <>
 struct fmt::formatter<${1:Type}> {
