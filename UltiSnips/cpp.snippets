@@ -944,9 +944,9 @@ snippet ngr_assert_return "check arguments and return invalid arg" br
 ASSERT_RETURN(${1:expr}, msg::${2:ERROR_PARAM_INVALID});
 endsnippet
 
-snippet ngr_if_actor_log_ret "actor context return if ret != msg::RESULT_SUCCESS" b
+snippet ngr_if_actor_ret_log "actor context return if ret != msg::RESULT_SUCCESS" b
 if (ret != msg::RESULT_SUCCESS) {
-	ACTOR_LOG_${1:ERROR}(${2:actor}, "${3:fmt}", ${4:args});
+	ACTOR_LOG_${1|ERROR,DEBUG,INFO}(${2:actor}, "${3:fmt}", ${4:args});
 	return ret;
 }
 endsnippet
@@ -954,12 +954,12 @@ endsnippet
 snippet ngr_if_def_ret_log "define ret as function call result and then check" b
 int ret = ${1:func}(${2:func_args});
 if (ret != 0) {
-	LOG_${3:ERROR}("$1 failed, ${4:fmt}", ${5:args});
+	LOG_${3|ERROR,DEBUG,INFO,FATAL}("$1 failed, ${4:fmt}", ${5:args});
 	return ret;
 }
 endsnippet
 
-snippet ngr_if_log_ret "return if ret != msg::RESULT_SUCCESS" b
+snippet ngr_if_ret_log "return if ret != msg::RESULT_SUCCESS" b
 if (ret != msg::RESULT_SUCCESS) {
 	LOG_${1:ERROR}("${2:fmt}", ${3:args});
 	return ret;
@@ -1017,6 +1017,14 @@ snippet ngr_scope_guard "ScopeGuard object" w
 ScopeGuard ${1:guard}([${2:capture}]() {
 	${3:statement}
 });
+endsnippet
+
+snippet ngr_inc_shm_stat "ngr include shm stat id file" b
+#include "Module/Src/EShmStatId.pb.h"
+endsnippet
+
+snippet ngr_inc_assert "ngr include AssertDef.h" b
+#include "comm/AssertDef.h"
 endsnippet
 
 # from https://devops.woa.com/console/codecc/ngr-gp/checker/list

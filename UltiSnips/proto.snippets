@@ -37,6 +37,10 @@ PACKABLE_FIELD_TYPES = [
 
 endglobal
 
+snippet impt "import proto" b
+import "${1:name}.proto";
+endsnippet
+
 snippet mess "Proto message" b
 message ${1:Name} {
 	$0
