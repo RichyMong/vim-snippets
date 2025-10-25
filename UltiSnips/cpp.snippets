@@ -74,6 +74,17 @@ def acm_error_log_func(func_call: str, rcvar: str = 'ret'):
 		log_str = f'{log_macro}({rcvar}, "{func_name} failed");'
 	return log_str
 
+def ngr_server_name_by_path(path: str) -> str:
+	import re
+	m = re.match(r".*Server/Source/(\w+)/(?:(\w+)/)?.*?(\w+)\.(?:h|cpp)", path)
+	if m is None:
+		return "GetNgrResouceInst"
+	else:
+		return m.group(1)
+
+def ngr_current_server_name() -> str:
+	return ngr_server_name_by_path(vim.current.buffer.name)
+
 def camel_to_pascal(s: str):
 	if s:
 	    s = s[0].upper() + s[1:]
@@ -940,8 +951,17 @@ snippet /ngr[__]?actor[__]?(debug|error|info|warn)/ "ngr log" br
 `!p snip.rv = "ACTOR_LOG_" + match.group(1).upper()`(${1:actor}, "${2:fmt}", ${3:args});
 endsnippet
 
-snippet ngr_assert_return "check arguments and return invalid arg" br
+snippet ngr_assert_return "check arguments and return invalid arg" b
 ASSERT_RETURN(${1:expr}, msg::${2:ERROR_PARAM_INVALID});
+endsnippet
+
+snippet ngr_get_resource "ResourceMgr::GetResource" b
+auto ${1:resource} = `!p snip.rv = ngr_current_server_name()`ResourceMgr::Instance()->GetResource<${2:ResourceType}>();
+ASSERT_RETURN(${1} != nullptr, msg::${3:ERROR_NOT_FOUND_RESOURCE});
+endsnippet
+
+snippet ngr_get_config "get config via the current config instance" w
+`!p snip.rv = ngr_current_server_name()`ConfigMgr::Instance()->${2:config}();
 endsnippet
 
 snippet ngr_if_actor_ret_log "actor context return if ret != msg::RESULT_SUCCESS" b
