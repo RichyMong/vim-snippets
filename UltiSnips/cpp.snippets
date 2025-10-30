@@ -1060,6 +1060,12 @@ snippet tx_wecheck_enable "wecheck enable from this line" b
 // wecheck[::enable]
 endsnippet
 
+snippet extern_c "extern C block" b
+extern "C" {
+${0:${VISUAL}}
+} // extern "C"
+endsnippet
+
 snippet formatter "fmt::formatter specialization of a type" b
 template <>
 struct fmt::formatter<${1:Type}> {
@@ -1092,6 +1098,18 @@ endsnippet
 
 snippet gtest_expect_elements "expect elments are" b
 EXPECT_THAT(${1:var}, ElementsAre(${2:exp}));
+endsnippet
+
+snippet if_asan "#ifdef __SANITIZE_ADDRESS__" b
+#ifdef __SANITIZE_ADDRESS__
+${0:${VISUAL}}
+#endif  // __SANITIZE_ADDRESS__
+endsnippet
+
+snippet if_not_asan "#ifndef __SANITIZE_ADDRESS__" b
+#ifndef __SANITIZE_ADDRESS__
+${0:${VISUAL}}
+#endif  // __SANITIZE_ADDRESS__
 endsnippet
 
 # Here end ououmania's snippets
