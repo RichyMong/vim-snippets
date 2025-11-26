@@ -16,6 +16,12 @@ pub fn ${1:function_name}($2)${3/..*/ -> /}$3 {
 }
 endsnippet
 
+snippet pfn_crate "pub(crate) fn name(?) -> ? {}"
+pub(crate) fn ${1:function_name}($2)${3/..*/ -> /}$3 {
+	${VISUAL}$0
+}
+endsnippet
+
 snippet afn "async fn name(?) -> ? {}"
 async fn ${1:function_name}($2)${3/..*/ -> /}$3 {
 	${VISUAL}$0

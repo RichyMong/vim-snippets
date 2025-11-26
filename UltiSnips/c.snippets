@@ -212,4 +212,17 @@ ${0:${VISUAL}}
 #endif // defined(_WIN32) || defined(_WIN64)
 endsnippet
 
+snippet ngr_copyright "ngr copyright" bw
+/**
+ * @file `!p snip.rv=snip.fn`
+ * @author richymeng@tencent.com
+ * @brief ${0}
+ * @version 0.1
+ * @date  `!v strftime("%Y-%m-%d")`
+ *
+ * @copyright Copyright (c) `!v strftime("%Y")`
+ *
+ */
+endsnippet
+
 # vim:ft=snippets:

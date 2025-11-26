@@ -930,19 +930,6 @@ snippet ngr_assert_args "ngr ASSERT_RETURN on function arguments" b
 ASSERT_RETURN(${1}, msg::ERROR_PARAM_INVALID);
 endsnippet
 
-snippet ngr_copyright "ngr copywright" bw
-/**
- * @file `!p snip.rv=snip.fn`
- * @author richymeng@tencent.com
- * @brief ${0}
- * @version 0.1
- * @date  `!v strftime("%Y-%m-%d")`
- *
- * @copyright Copyright (c) `!v strftime("%Y")`
- *
- */
-endsnippet
-
 snippet /ngr[__]?(debug|error|info|warn)/ "ngr log" br
 `!p snip.rv = "LOG_" + match.group(1).upper()`("${1:fmt}", ${2:args});
 endsnippet
