@@ -504,7 +504,7 @@ for (auto ${1:it} = ${2:container}.begin(); $1 != $2.end(); ) {
 endsnippet
 
 snippet for_map_erase "for auto iterator to erase a map" b
-for (auto ${1:it} = ${2:container}.begin(); $1 != $2.end(); ++it) {
+for (auto ${1:it} = ${2:container}.begin(); $1 != $2.end(); ) {
 	auto tmpIt = it++;
 	if (${3:expr}) {
 		tmpIt = $2.erase(tmpIt);
@@ -971,6 +971,14 @@ if (ret != msg::RESULT_SUCCESS) {
 	LOG_${1:ERROR}("${2:fmt}", ${3:args});
 	return ret;
 }
+endsnippet
+
+snippet ngr_include_component "ngr include a Component header" b
+#include "${1}/$1Component.h"
+endsnippet
+
+snippet ngr_include_system "ngr include a System header" b
+#include "${1}/$1System.h"
 endsnippet
 
 snippet ngr_make_exception_future "make an exception feature" bw
