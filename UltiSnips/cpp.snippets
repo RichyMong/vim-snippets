@@ -144,6 +144,10 @@ snippet using "using directive/using declaration/type alias"
 using ${1:namespace}`!p snip.rv = ' ' if t[1] == 'namespace' else ' = ' if t[1] != '' else ''`${2:name};
 endsnippet
 
+snippet fopen_guard "fopen and fclose with unique_ptr" b
+std::unique_ptr<FILE, decltype(&fclose)> ${1:fp}(fopen(${2:filename}, ${3:"r"}), fclose);
+endsnippet
+
 snippet readfile "read file (readF)"
 std::vector<char> v;
 if (FILE *fp = fopen(${1:"filename"}, "r"))
@@ -343,7 +347,7 @@ endsnippet
 snippet cls_noncopyable_movable "a noncopyable but moveable class" b
 ${1:`!p camel_case_cls_name_from_file()`}(const $1 &) = delete;
 $1& operator=(const $1 &) = delete;
-$1($1&&) = default;
+$1($1&&) noexcept = default;
 endsnippet
 
 snippet cls_noncopyable_def "A noncopyable class with name as camel case file name" b
